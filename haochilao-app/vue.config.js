@@ -5,6 +5,16 @@ module.exports = {
   // Webpack开发服务器设置
   devServer: {
     host: '127.0.0.1',
-    port: 8090
-  }
+    port: 8090,
+    open: true,
+    proxy: {
+      '/app': {
+        target: 'http://127.0.0.1:5050', // 测试环境
+        // target: 'http://club.10155.com', // 正式环境
+        ws: false,
+        changeOrigin: true
+      },
+    }
+  },
+  outputDir: 'haochilao'
 }

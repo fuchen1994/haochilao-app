@@ -10,6 +10,9 @@ import vant from 'vant'
 import 'vant/lib/index.css'
 Vue.use(vant)
 
+import FastClick from 'fastclick'
+FastClick.attach(document.body)
+
 Vue.config.productionTip = false
 
 new Vue({
