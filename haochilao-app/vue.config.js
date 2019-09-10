@@ -4,9 +4,10 @@
 module.exports = {
   // Webpack开发服务器设置
   devServer: {
-    host: '127.0.0.1',
+    host: '192.168.0.104',
     port: 8090,
     open: true,
+    disableHostCheck: true,
     proxy: {
       '/app': {
         target: 'http://127.0.0.1:5050', // 测试环境

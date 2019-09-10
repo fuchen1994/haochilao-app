@@ -13,6 +13,11 @@ Vue.use(vant)
 import FastClick from 'fastclick'
 FastClick.attach(document.body)
 
+import './assets/fontIcon/iconfont'
+
+import loadmore from './utils/loadMore'
+Vue.directive('loadmore', loadmore)
+
 Vue.config.productionTip = false
 
 new Vue({

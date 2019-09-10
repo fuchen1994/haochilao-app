@@ -2,39 +2,66 @@
   <div class="tabbar-container">
 
     <div class="tabbar-box">
-      <van-button type="default" @click="openTabbar">默认按钮</van-button>
 
-      <div class="modal"></div>
+      <div class="modal" v-show="isTabbarShow === 'show'" @click="openTabbar"></div>
       <div :class="[
         'modal-content',
-        { bounceInLeft: isTabbarShow }
+        { bounceInLeft: isTabbarShow === 'show' },
+        { bounceOutLeft: isTabbarShow === 'hide' },
+        { transparent: isTabbarShow == null }
       ]">
 
-        <div class="inner-content">
-          <div class="dish-classify-title">菜品分类</div>
+        <div class="scroll-wraper">
+          <div class="inner-content">
 
-          <ul class="fast-order">
-            <li>优惠</li>
-            <li>本店销量</li>
-            <li>我点过的菜</li>
-          </ul>
+            <div class="dish-classify-title">菜品分类</div>
 
-          <ul class="dish-classify-content">
-            <li 
-              v-for="(item, i) in dishClassifyList" 
-              :key="i"
-              :class="{ active: currentDishClassifyId == item.id }"
-              @click="chooseDishClassify(item)">
-              <span>{{ item.name }}</span>
-              <i class="separate-line"></i>
-            </li>
-          </ul>
+            <ul class="fast-order">
+              <li>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-youhuiquan1"></use>
+                </svg>
+                优惠
+              </li>
+              <li>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-redu1"></use>
+                </svg>
+                本店销量
+              </li>
+              <li>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-jilu1"></use>
+                </svg>
+                我点过的菜
+              </li>
+            </ul>
+
+            <ul class="dish-classify-content">
+              <li 
+                v-for="(item, i) in dishClassifyList" 
+                :key="i"
+                :class="{ active: currentDishClassifyId == item.id }"
+                @click="chooseDishClassify(item)">
+                <span>{{ item.name }}</span>
+                <i class="separate-line"></i>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <!-- 打开分类按钮 -->
         <div class="open-tabbar-btn" @click="openTabbar">
-          分类
+          <div class="open-btn-content">
+            <div>
+              <svg class="classify-icon" aria-hidden="true">
+                <use xlink:href="#icon-shiwu"></use>
+              </svg>
+            </div>
+            分类
+          </div>
         </div>
+
       </div>
       
     </div>
@@ -43,11 +70,13 @@
   </div>
 </template>
 <script>
+import BScroll from 'better-scroll'
+
 export default {
   name: 'tabbar',
   data() {
     return {
-      isTabbarShow: false,
+      isTabbarShow: null,
       dishClassifyList: [  // 菜品分类列表
         {
           id: 1,
@@ -89,14 +118,57 @@ export default {
           id: 10,
           name: '汤粉汤粉汤粉汤粉汤粉汤粉'
         },
+        {
+          id: 11,
+          name: '汤粉汤粉汤粉汤粉汤粉汤粉'
+        },
+        {
+          id: 12,
+          name: '汤粉汤粉汤粉汤粉汤粉汤粉'
+        },
       ],
-      currentDishClassifyId: null  // 当前选择的菜品分类
+      currentDishClassifyId: null,  // 当前选择的菜品分类
+      // scrollTop: 0 // 原本使用原生overflow-y: scroll 的时候，这里存在一个问题：当滑动分类框里面的内容时，home页面也会跟着滑动，原本是想在打开遮罩时为body添加一个固定定位属性固定，然后当遮罩关闭时将之前的scollTop赋值给body。但是采用了BetterScroll插件，这个问题就没有了
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.initBScroll()
+    })
+  },
   methods: {
+    initBScroll () {
+      let wrapper = document.querySelector('.scroll-wraper')
+      console.log('wrapper', wrapper)
+      let scroll = new BScroll(wrapper, {
+        // 当设置为 true 的时候，可以开启纵向滚动
+        scrollY: true,
+        // better-scroll 默认会阻止浏览器的原生 click 事件。当设置为 true，better-scroll 会派发一个 click 事件，我们会给派发的 event 参数加一个私有属性 _constructed，值为 true
+        click: true,
+        // 当滚动超过边缘的时候会有一小段回弹动画。设置为 true 则开启动画
+        // bounce: {
+        //   top: true,
+        //   bottom: true,
+        //   left: false,
+        //   right: false
+        // },
+        // 当快速在屏幕上滑动一段距离的时候，会根据滑动的距离和时间计算出动量，并生成滚动动画。设置为 true 则开启动画
+        momentum: true  
+      })
+    },
     // 打开菜单栏
     openTabbar () {
-      this.isTabbarShow = !this.isTabbarShow
+      // this.isTabbarShow = !this.isTabbarShow
+      if (this.isTabbarShow === null) {
+        this.isTabbarShow = 'show'
+        // this.scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+        // document.getElementsByTagName('body')[0].className += 'disable-move'
+        // console.log('scrollTop' ,this.scrollTop)
+      } else if (this.isTabbarShow === 'show') {
+        this.isTabbarShow = 'hide'
+      } else {
+        this.isTabbarShow = 'show'
+      }
     },
     // 选择菜品
     chooseDishClassify (item) {
@@ -106,6 +178,27 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+@keyframes bounceOutLeft {
+
+  0% {
+    opacity: 1;
+    -webkit-transform: translate3d(3.2rem, 0, 0);
+    transform: translate3d(3.2rem, 0, 0);
+  }
+
+  20% {
+    opacity: 1;
+    -webkit-transform: translate3d(3.6rem, 0, 0);
+    transform: translate3d(3.6rem, 0, 0);
+  }
+
+  to {
+    opacity: 0.3;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @keyframes bounceInLeft {
   from,
   60%,
@@ -124,13 +217,13 @@ export default {
 
   60% {
     opacity: 1;
-    -webkit-transform: translate3d(3.7rem, 0, 0);
-    transform: translate3d(3.7rem, 0, 0);
+    -webkit-transform: translate3d(3.6rem, 0, 0);
+    transform: translate3d(3.6rem, 0, 0);
   }
 
   75% {
-    -webkit-transform: translate3d(3rem, 0, 0);
-    transform: translate3d(3rem, 0, 0);
+    -webkit-transform: translate3d(3.1rem, 0, 0);
+    transform: translate3d(3.1rem, 0, 0);
   }
 
   90% {
@@ -150,6 +243,14 @@ export default {
   animation-duration: 0.3s;
   animation-fill-mode: both;
 }
+
+.bounceOutLeft {
+  -webkit-animation-name: bounceOutLeft;
+  animation-name: bounceOutLeft;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
   .tabbar-container {
     position relative
     .tabbar-box {
@@ -172,30 +273,39 @@ export default {
         // transition all 0.3s ease-out
         z-index 2021
       }
-      .modal-content.hide {
-        left -3.2rem
+      .transparent {
+        opacity 0.3
       }
       // 分类按钮
       .open-tabbar-btn {
         position absolute
         top 50vh
-        right -24%
+        right -20%
         transform translateY(-50%)
         background-color #fff
         width 1.2rem
         height 1.2rem
         border-radius 50%
-        font-size 0.28rem
+        font-size 0.24rem
         z-index 2022
+        .open-btn-content {
+          width 0.7rem
+          height 1rem
+          position absolute
+          top 0.1rem
+          right 0
+          // background-color rgba(125, 125, 125, 0.3)
+        }
       }
       // 分类框
-      .inner-content {
+      .scroll-wraper {
         background-color #eeeeee
         position relative
         z-index 2023
         height 100vh
         width 3.9rem
-        overflow-y scroll
+        // overflow-y scroll
+        overflow-y hidden
       }
     }
     .dish-classify-title {
@@ -248,9 +358,23 @@ export default {
         background-color #ffffff
       }
     }
+
+    .classify-icon {
+      width 0.5rem
+      height 0.5rem
+      vertical-align -0.15rem
+      fill currentColor
+      overflow hidden
+      margin-right 0
+      margin-bottom 0.07rem
+    }
+
+    .disable-move {
+      position fixed
+      // top 0
+      height 100%
+      overflow hidden
+    }
   }
-
-
-
 
 </style>

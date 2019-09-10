@@ -29,5 +29,12 @@ html {
 li {
   list-style: none;
 }
-
+.icon {
+  width: 0.35rem;
+  height: 0.35rem;
+  vertical-align: -0.07rem;
+  fill: currentColor;
+  overflow: hidden;
+  margin-right: 0.1rem;
+}
 </style>
