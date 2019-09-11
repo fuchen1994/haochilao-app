@@ -139,7 +139,6 @@ export default {
   methods: {
     initBScroll () {
       let wrapper = document.querySelector('.scroll-wraper')
-      console.log('wrapper', wrapper)
       let scroll = new BScroll(wrapper, {
         // 当设置为 true 的时候，可以开启纵向滚动
         scrollY: true,
