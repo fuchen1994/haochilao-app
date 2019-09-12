@@ -62,19 +62,19 @@
         <li class="tab-item" v-for="(item, i) in bannerList" :key="i" ref="tabItem">
 
           <!-- 菜品主图 -->
-          <img :src="item.imgUrl" class="dish_img">
+          <img :src="item.dishImgUrl" class="dish_img">
 
           <!-- 菜品信息 -->
           <div class="dish_info_box">
 
             <div class="dish_title">
-              {{ item.name }}
-              <svg class="hot_dish_icon" aria-hidden="true" v-for="(cell, j) in item.zan" :key="j">
+              {{ item.dishName }}
+              <svg class="hot_dish_icon" aria-hidden="true" v-for="(cell, j) in item.praiseDegree" :key="j">
                 <use xlink:href="#icon-dianzan"></use>
               </svg>
             </div>
             <div class="dish_price">
-              <span class="rmb_symbol">¥</span>{{ item.price }}
+              <span class="rmb_symbol">¥</span>{{ item.dishPrice }}
             </div>
 
           </div>
@@ -95,35 +95,76 @@
     </div>
 
     <ul class="dish_list_container">
-      <li>
-        <div class="">
+      <li v-for="(item, i) in dishRecommendationList" :key="i">
+        <div class="dish_content">
+
+          <!-- 上部分 -->
+          <div class="dish_img_box">
+            <!-- 菜图 -->
+            <img :src="item.dishImgUrl" >
+
+            <!-- 辣椒图标,好评度图标 -->
+            <div class="dish_icon_box">
+
+              <svg class="dish_icon" aria-hidden="true" v-if="item.isSpicy">
+                <use xlink:href="#icon-lajiao"></use>
+              </svg>
+
+              <svg class="dish_icon" aria-hidden="true" v-for="(cell, j) in item.praiseDegree" :key="j">
+                <use xlink:href="#icon-dianzan"></use>
+              </svg>
+
+            </div>
+
+          </div>
+
+          <!-- 下部分 -->
+          <div class="dish_info">
+            <div class="dish_name text_over_hidden">
+              {{ item.dishName }}
+            </div>
+            <div class="dish_price">
+              <span class="rmb_symbol">¥</span>{{ item.dishPrice }}  
+            </div>
+          </div>
 
         </div>
+
+        <!-- 热门标签 -->
         <div class="mark_box">
-
+          <span class="mark_text">{{ item.markName }}</span>
         </div>
+
+        <!-- 角标（已点的数量） -->
+        <span class="ordered_count_mark" v-if="Number(item.orderedCount)">
+          {{ item.orderedCount }}
+        </span>
+
       </li>
-
-      <li>
-        <div class="">
-
-        </div>
-        <div class="mark_box">
-
-        </div>
-      </li>
-
-      <li>
-        <div class="">
-
-        </div>
-        <div class="mark_box">
-
-        </div>
-      </li>
-
 
     </ul>
+
+    <!-- 搜索按钮 -->
+    <div class="search_btn" :style="{ opacity: searchOpacity, display: searchDisplay }">
+
+      <!-- 搜索关键字输入框 -->
+      <input 
+        type="text" 
+        :class="['search_input', { input_change: isSearchInputShow }]" 
+        v-model="keywords"
+        placeholder="请输入想要点的菜名">
+
+      <!-- 搜索图标 -->
+      <svg class="search_icon" aria-hidden="true" @click="searchDishes">
+        <use xlink:href="#icon-icon-test"></use>
+      </svg>
+
+    </div>
+
+    <!--  -->
+    <div class="">
+
+    </div>
 
   </div>
 </template>
@@ -136,36 +177,113 @@ export default {
     return {
       bannerList: [
         {
-          name: '麻婆豆腐',
-          imgUrl: require('@/assets/bg/bg-01.jpg'),
-          price: '12.00',
-          zan: 2
+          dishName: '麻婆豆腐',
+          dishImgUrl: require('@/assets/bg/bg-01.jpg'),
+          dishPrice: '12.00',
+          praiseDegree: 2
         },
         {
-          name: '辣椒炒肉',
-          imgUrl: require('@/assets/bg/bg-10.jpg'),
-          price: '15.00',
-          zan: 1
+          dishName: '辣椒炒肉',
+          dishImgUrl: require('@/assets/bg/bg-10.jpg'),
+          dishPrice: '15.00',
+          praiseDegree: 1
         },
         {
-          name: '金牌叉烧饭',
-          imgUrl: require('@/assets/bg/bg-03.jpg'),
-          price: '11.00',
-          zan: 3
+          dishName: '金牌叉烧饭',
+          dishImgUrl: require('@/assets/bg/bg-03.jpg'),
+          dishPrice: '11.00',
+          praiseDegree: 3
         },
         {
-          name: '蒜香鸡汁块',
-          imgUrl: require('@/assets/bg/bg-05.jpg'),
-          price: '14.00',
-          zan: 5
+          dishName: '蒜香鸡汁块',
+          dishImgUrl: require('@/assets/bg/bg-05.jpg'),
+          dishPrice: '14.00',
+          praiseDegree: 5
         },
       ],
       scroll: null,  // BScroll实例对象
+      dishRecommendationList: [  // 菜品推荐列表
+        {
+          markName: '本月新品',  // 标签名字
+          orderedCount: 0,   // 已点数量
+          isSpicy: false,  // 是否是辣的
+          praiseDegree: 2,  // 好评度
+          dishName: '招牌江西米粉份粉份粉份粉份粉',
+          dishImgUrl: require('@/assets/bg/bg-02.jpg'),
+          dishPrice: '16.00'
+        },
+        {
+          markName: '本月新品',  // 标签名字
+          orderedCount: 2,   // 已点数量
+          isSpicy: true,  // 是否是辣的
+          praiseDegree: 3,  // 好评度
+          dishName: '韩式肥牛辛拉米粉份粉份粉份粉份粉',
+          dishImgUrl: require('@/assets/bg/bg-03.jpg'),
+          dishPrice: '15.00'
+        },
+        {
+          markName: '本店招牌',  // 标签名字
+          orderedCount: 0,   // 已点数量
+          isSpicy: false,  // 是否是辣的
+          praiseDegree: 2,  // 好评度
+          dishName: '金牌牛肉饼',
+          dishImgUrl: require('@/assets/bg/bg-08.jpg'),
+          dishPrice: '25.00'
+        },
+        {
+          markName: '本月新品',  // 标签名字
+          orderedCount: 12,   // 已点数量
+          isSpicy: true,  // 是否是辣的
+          praiseDegree: 5,  // 好评度
+          dishName: '招牌江西米粉份粉份粉份粉份粉',
+          dishImgUrl: require('@/assets/bg/bg-04.jpg'),
+          dishPrice: '14.00'
+        },
+        {
+          markName: '本月新品',  // 标签名字
+          orderedCount: 0,   // 已点数量
+          isSpicy: false,  // 是否是辣的
+          praiseDegree: 1,  // 好评度
+          dishName: '日式脆骨面',
+          dishImgUrl: require('@/assets/bg/bg-07.jpg'),
+          dishPrice: '11.00'
+        },
+        {
+          markName: '本月新品',  // 标签名字
+          orderedCount: 0,   // 已点数量
+          isSpicy: true,  // 是否是辣的
+          praiseDegree: 2,  // 好评度
+          dishName: '招牌江西米粉份粉份粉份粉份粉',
+          dishImgUrl: require('@/assets/bg/bg-06.jpg'),
+          dishPrice: '13.00'
+        },
+      ],
+      isSearchInputShow: false,  // 搜索栏输入框是否显示
+      keywords: '',  // 搜索关键字
+      searchOpacity: 0,  // 搜索框透明度
+      searchDisplay: 'none',  // 搜索框是否显示
     }
   },
   created() {
     this.$nextTick(() => {
       this.InitTabScroll()
+    })
+    window.addEventListener('scroll', function () {
+      let scrollTop = document.documentElement.scrollTop
+      console.log('scrollTop', scrollTop)
+      if (scrollTop > 65) {
+        this.searchDisplay = 'visible'
+        let disCount = scrollTop - 65
+        if (disCount > 100) {
+          this.searchOpacity = 1
+        } else {
+          this.searchOpacity = (disCount / 100).toFixed(1)
+          console.log('searchOpacity', searchOpacity)
+        }
+      } else {
+        this.searchOpacity = 0
+        this.searchDisplay = 'none'
+      }
     })
   },
   computed: {
@@ -176,6 +294,16 @@ export default {
     }
   },
   methods: {
+    // 点击搜索菜品按钮
+    searchDishes () {
+      if (this.isSearchInputShow) {
+        this.isSearchInputShow = false
+        // 调用搜索接口
+
+      } else {
+        this.isSearchInputShow = true
+      }
+    },
     // 滚动轮播
     InitTabScroll () {
       let width = 0
@@ -227,6 +355,8 @@ export default {
       text-align center
       font-size 0.25rem
       overflow hidden
+      // position relative
+      // z-index 1000
 
       >div {
         padding-top 0.2rem
@@ -332,10 +462,6 @@ export default {
         color #ffffff
       }
 
-      .rmb_symbol {
-        margin-right 0.05rem
-      }
-
       .hot_dish_icon {
         width 0.4rem
         height 0.4rem
@@ -394,18 +520,156 @@ export default {
       
       li {
         width 2.3rem
-        height 2.9rem
-        background-color #fff
+        height 3.1rem
         // padding 0.15rem 0 0 0.08rem
         padding-top 0.15rem
         margin-right 0.15rem
         margin-bottom 0.4rem
+        position relative
       }
 
-      li:last-child {
+      li:nth-child(3n) {
         margin-right 0
       }
 
+      .dish_content {
+        height 100%
+        background-color #fff
+        border-bottom-left-radius 0.07rem
+        border-bottom-right-radius 0.07rem
+        overflow hidden
+      }
+
+      .dish_img_box {
+        height 1.64rem
+        overflow hidden
+        position relative
+        img {
+          height 100%
+          width 100%
+          object-fit cover
+          background-color #eee
+        }
+      }
+
+      .dish_info {
+        height calc(100% - 1.64rem)
+        padding 0.15rem 0.11rem 0
+      }
+
+      .dish_name {
+        font-size 0.29rem
+        width 100%
+        margin-bottom 0.22rem
+        font-weight 600
+      }
+
+      .dish_price {
+        font-size 0.25rem
+        color #666
+      }
+
+      .mark_box {
+        position absolute
+        top 0
+        left 0
+        width 1.1rem
+        height 0.5rem
+        background url('../../assets/text_mark/mark_02.png') left top no-repeat
+        background-size 100%
+        padding-left 0.14rem
+        .mark_text {
+          font-size 0.2rem
+          color #fff
+          vertical-align top
+          position relative
+          top 0.02rem
+        }
+      }
+
+      .ordered_count_mark {
+        position absolute
+        top 0
+        right 0
+        padding 0.05rem 0.15rem
+        background-color #EC313D
+        font-size 0.25rem
+        border-radius 0.2rem
+        color #fff
+      }
+
+      .dish_icon_box {
+        position absolute
+        bottom 0
+        left 0
+        height 0.5rem
+        width 100%
+        // background-color #fff
+        line-height 0.2rem
+        padding-left 0.11rem
+        .dish_icon {
+          width 0.3rem
+          height 0.3rem
+          // vertical-align -0.02rem
+          fill currentColor
+          overflow hidden
+          margin-right 0
+        }
+      }
     }
+
+    .rmb_symbol {
+      margin-right 0.05rem
+    }
+
+    .search_btn {
+      position fixed
+      top 0.4rem
+      right 0.4rem
+      z-index 999
+      min-width 0.9rem
+      height 0.9rem
+      border-radius 0.9rem
+      background-color rgba(255, 255, 255, 0.9)
+      box-shadow 0 0.08rem 0.1rem  rgba(0, 0, 0, 0.3)
+      text-align center
+      // line-height 0.9rem
+      // padding 0 0.6rem 0 0.3rem
+      padding-right 0.85rem
+      display flex
+      align-items center
+      overflow hidden
+
+      .search_input {
+        height 0.5rem
+        border-radius 0.9rem
+        outline none
+        font-size 0.25rem
+        border 0
+        letter-spacing 0.02rem
+        transition all 0.3s ease-out
+        padding 0
+        width 0
+      }
+
+      .input_change {
+        width 3rem
+        padding 0 0.1rem
+        margin-left 0.3rem
+      }
+
+      .search_icon {
+        position absolute
+        top 50%
+        transform translateY(-50%)
+        right 0.14rem
+        width 0.6rem
+        height 0.6rem
+        // vertical-align -0.1rem
+        fill currentColor
+        overflow hidden
+      }
+    }
+    
   }
 </style>

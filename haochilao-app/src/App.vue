@@ -16,9 +16,11 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+
 html {
   color:#333;
 }
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -26,9 +28,11 @@ html {
   max-width: 750px;
   margin: 0 auto;
 }
+
 li {
   list-style: none;
 }
+
 .icon {
   width: 0.35rem;
   height: 0.35rem;
@@ -36,5 +40,11 @@ li {
   fill: currentColor;
   overflow: hidden;
   margin-right: 0.1rem;
+}
+
+.text_over_hidden {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

@@ -19,7 +19,7 @@
             <ul class="fast-order">
               <li>
                 <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-youhuiquan1"></use>
+                  <use xlink:href="#icon-youhuiquan2"></use>
                 </svg>
                 优惠
               </li>
@@ -267,8 +267,9 @@ export default {
         // left 0
         left -3.9rem
         top 0
+        bottom 0
         min-width 0.7rem
-        min-height 100%
+        // min-height 100%
         // transition all 0.3s ease-out
         z-index 2021
       }
@@ -301,10 +302,10 @@ export default {
         background-color #eeeeee
         position relative
         z-index 2023
-        height 100vh
+        height 100%
         width 3.9rem
         // overflow-y scroll
-        overflow-y hidden
+        overflow hidden
       }
     }
     .dish-classify-title {
