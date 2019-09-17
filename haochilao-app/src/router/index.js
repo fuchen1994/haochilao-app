@@ -4,12 +4,15 @@ import Router from 'vue-router'
 // console.log(process.env)
 const _import = require('./_import_' + process.env.NODE_ENV)
 
-// 导航
+// 菜品分类导航
 const Tabbar = _import('tabbar/index')
-// 登录
+// 登录页
 const Login = _import('login/index')
+// 主页
 const Home = _import('home/index')
-// 404
+// 菜品详情页
+const dishDetail = _import('dishDetail/index')
+// 404页
 const NotFound = _import('notFound/index')
 
 Vue.use(Router)
@@ -38,6 +41,10 @@ export default new Router({
           component: Home
         }
       ]
+    },
+    {
+      path: '/dishDetail/:id',
+      component: dishDetail
     },
     {
       path: '*',

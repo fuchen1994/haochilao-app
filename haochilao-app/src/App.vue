@@ -26,6 +26,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   max-width: 750px;
+  /* overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; */
   margin: 0 auto;
 }
 

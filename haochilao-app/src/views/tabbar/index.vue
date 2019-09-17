@@ -279,7 +279,7 @@ export default {
       // 分类按钮
       .open-tabbar-btn {
         position absolute
-        top 50vh
+        top 50%
         right -20%
         transform translateY(-50%)
         background-color #fff
