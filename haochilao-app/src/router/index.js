@@ -19,9 +19,9 @@ Vue.use(Router)
 
 export default new Router({
   // 对于所有路由导航，让页面滚动到顶部
-  scrollBehavior: () => ({
-    y: 0
-  }),
+  // scrollBehavior: () => ({
+  //   y: 0
+  // }),
   routes: [
     {
       path: '/',

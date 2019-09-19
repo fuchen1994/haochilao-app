@@ -1,13 +1,13 @@
 <template>
 	<ul class="dish_list_container">
-		<li v-for="(item, i) in dishList" :key="i">
+		<li v-for="(item, i) in dishList" :key="i" @click="goDishDetail(item)">
 
 			<div class="dish_content">
 
 				<!-- 上部分 -->
 				<div class="dish_img_box">
 					<!-- 菜图 -->
-					<img :src="item.dishImgUrl" @click="goDishDetail(item)"/>
+					<img :src="item.dishImgUrl"/>
 
 					<!-- 辣椒图标,好评度图标 -->
 					<div class="dish_icon_box">
@@ -15,9 +15,18 @@
 							<use xlink:href="#icon-lajiao" />
 						</svg>
 
-						<svg class="dish_icon" aria-hidden="true" v-for="(cell, j) in item.praiseDegree" :key="j">
+						<!-- <svg class="dish_icon" aria-hidden="true" v-for="(cell, j) in item.praiseDegree" :key="j">
 							<use xlink:href="#icon-dianzan" />
-						</svg>
+						</svg> -->
+
+						<van-icon 
+              name="good-job" 
+              color="#FFD31C" 
+              size="0.3rem" 
+              v-for="(cell, j) in item.praiseDegree" 
+              :key="j"
+						/>
+
 					</div>
 				</div>
 

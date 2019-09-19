@@ -12,6 +12,7 @@ Vue.use(vant)
 
 import FastClick from 'fastclick'
 FastClick.attach(document.body)
+document.body.addEventListener('touchstart', function () {})
 
 import './assets/fontIcon/iconfont.js'
 import './assets/fontIcon/iconfont.css'

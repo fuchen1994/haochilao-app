@@ -69,11 +69,21 @@
             <!-- 菜品信息 -->
             <div class="dish_info_box">
 
-              <div class="dish_title">
-                {{ item.dishName }}
-                <svg class="hot_dish_icon" aria-hidden="true" v-for="(cell, j) in item.praiseDegree" :key="j">
+              <div class="dish_title_box">
+                <span class="title_text">{{ item.dishName }}</span>
+
+                <!-- <svg class="hot_dish_icon" aria-hidden="true" v-for="(cell, j) in item.praiseDegree" :key="j">
                   <use xlink:href="#icon-dianzan"></use>
-                </svg>
+                </svg> -->
+
+                <van-icon 
+                  name="good-job" 
+                  color="#FFD31C" 
+                  size="0.4rem" 
+                  v-for="(cell, j) in item.praiseDegree" 
+                  :key="j"
+                />
+
               </div>
               <div class="dish_price">
                 <span class="rmb_symbol">¥</span>{{ item.dishPrice }}
@@ -145,7 +155,7 @@
           <use xlink:href="#icon-gouwuche4"></use>
         </svg> -->
 
-        <span class="navigation_text">购物车</span>
+        <span class="navigation_text">点菜单</span>
 
       </van-button>
     </div>
@@ -363,7 +373,6 @@ export default {
   computed: {
     rootRemToPx () {
       let fontSize = document.documentElement.style.fontSize
-      console.log('rem-font-zie', fontSize)
       return parseFloat(fontSize)
     }
   },
@@ -377,6 +386,31 @@ export default {
         this.searchDisplay = 'none'
       }
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    // 跳转回来的时候，回到原来的位置
+    // console.log('跳转回来-to', to)
+    // console.log('跳转回来-from', from)
+    if (to.path === '/home') {
+      next(vm => {
+        // 通过 `vm` 访问组件实例
+        let content = document.querySelector('.page_content')
+        let homePageScrollY = vm.$store.state.homePageScrollY
+        console.log('vuex-homePageScrollY', homePageScrollY)
+        content.scrollTop = homePageScrollY
+        // window.scroll(0, homePageScrollY)
+      })
+      
+    }
+    // next()
+  },
+  beforeRouteLeave(to, from, next) {
+    let content = document.querySelector('.page_content')
+    let scrollTop = content.scrollTop //记录离开页面的位置
+    if (scrollTop == null) scrollTop = 0
+    console.log('离开时的scrollTop', scrollTop)
+    this.$store.commit('setHomePageScrollY', scrollTop) //离开路由时把位置存起来
+    next()
   },
   methods: {
     // 点击搜索菜品按钮
@@ -433,15 +467,16 @@ export default {
     // 解决ios固定定位失效（输入框获取焦点之后）
     .page_content {
       // height 100%
-      margin 0 auto
+      // margin 0 auto
       position fixed
       padding 0.4rem 0.15rem 0
       top 0
       left 0
-      bottom 2px
+      bottom 0
+      right 0
       overflow-y scroll
-      width 100%
-      height auto
+      // width 100%
+      // height auto
       -webkit-overflow-scrolling touch
       z-index 1
     }
@@ -549,11 +584,17 @@ export default {
         z-index 1
       }
 
-      .dish_title {
+      .dish_title_box {
         font-size 0.35rem
         letter-spacing 0.05rem
         color #ffffff
         // font-weight bold
+        >>>.van-icon {
+          vertical-align -0.06rem
+        }
+        .title_text {
+          font-weight 600
+        }
       }
 
       .dish_price {
@@ -751,7 +792,8 @@ export default {
     .shopping_cart_btn {
       bottom 0.4rem
       right 0.4rem
-      background-color rgba(227, 56, 24, 0.9)
+      background-color rgba(249, 64, 46, 0.9)
+      // background-color rgba(227, 56, 24, 0.9)
 
       .iconfont {
         font-size 0.45rem

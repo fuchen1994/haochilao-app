@@ -6,7 +6,13 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  // watch: {
+  //   $route (to, from) {
+  //     console.log('app监听路由-to', to)
+  //     console.log('app监听路由-from', from)
+  //   }
+  // },
 }
 </script>
 
