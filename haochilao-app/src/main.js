@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import './cube-ui'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -22,6 +23,12 @@ Vue.directive('loadmore', loadmore)
 
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload)
+
+import {
+  Style,
+  Scroll
+} from 'cube-ui'
+Vue.use(Scroll)
 
 Vue.config.productionTip = false
 

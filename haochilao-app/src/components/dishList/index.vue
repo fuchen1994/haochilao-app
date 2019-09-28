@@ -7,7 +7,7 @@
 				<!-- 上部分 -->
 				<div class="dish_img_box">
 					<!-- 菜图 -->
-					<img :src="item.dishImgUrl"/>
+					<img v-lazy="item.dishImgUrl"/>
 
 					<!-- 辣椒图标,好评度图标 -->
 					<div class="dish_icon_box">
@@ -54,6 +54,7 @@
 </template>
 <script>
 export default {
+	name: 'dishList',
 	data() {
 		return {};
   },
@@ -139,7 +140,7 @@ export default {
 			color: #fff;
 			vertical-align: top;
 			position: relative;
-			top: 0.02rem;
+			top: 0.06rem;
 		}
 	}
 
@@ -149,6 +150,8 @@ export default {
 		right: 0;
 		padding: 0.05rem 0.15rem;
 		background-color: #EC313D;
+		// background-color: #ee0a24;
+		// background-image linear-gradient(to top, #ff6034, #ee0a24)
 		font-size: 0.25rem;
 		border-radius: 0.2rem;
 		color: #fff;

@@ -6,8 +6,6 @@
       <span class="text">返回</span>
     </div>
 
-    
-
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <div class="page_content">
 
@@ -102,6 +100,7 @@
 </template>
 <script>
 export default {
+  name: 'dishDetail',
 	data() {
 		return {
       isLoading: false,  // 下拉刷新
@@ -196,6 +195,7 @@ export default {
     transform scale(2)
   }
 }
+
 .dish_detail_container {
   background-color #ffffff
   padding-bottom 1.1rem
@@ -219,7 +219,7 @@ export default {
     display flex
     justify-content center
     align-items center
-    z-index 999
+    z-index 2000
     .text {
       margin-right 0.1rem
     }
@@ -244,7 +244,7 @@ export default {
     justify-content flex-end
     padding-right 0.22rem
     align-items center
-    z-index 999
+    z-index 2000
     .iconfont {
       margin-right 0.05rem
     }

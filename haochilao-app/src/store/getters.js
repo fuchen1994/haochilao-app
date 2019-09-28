@@ -1,4 +1,6 @@
 const getters = {
-  user: state => state.user
+  rootRemToPx: state => state.rootRemToPx,
+  user: state => state.user,
+  home: state => state.home,
 }
 export default getters

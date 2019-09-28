@@ -11,6 +11,7 @@
     "axios": "^0.19.0",
     "better-scroll": "^1.15.2",
     "core-js": "^2.6.5",
+    "cube-ui": "~1.12.15",
     "fastclick": "^1.0.6",
     "qs": "^6.8.0",
     "vant": "^2.2.0",
@@ -28,6 +29,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
+    "vue-cli-plugin-cube-ui": "^0.2.5",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
@@ -51,6 +53,15 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
-  ]
+    "last 2 versions",
+    "not ie <= 11",
+    "Android >= 4.0",
+    "iOS >= 8"
+  ],
+  "transformModules": {
+    "cube-ui": {
+      "transform": "cube-ui/src/modules/${member}",
+      "kebabCase": true
+    }
+  }
 }

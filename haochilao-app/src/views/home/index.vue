@@ -5,111 +5,136 @@
     </svg> -->
     <div class="bg-cover"></div>
 
-    <div class="page_content">
+    <div class="page_wrapper" ref="homePageContent">
 
-      <div class="tab-container">
+      <cube-scroll
+        ref="scroll"
+        :options="options"
+        :scroll-events="['scroll', 'scroll-end']"
+        @scroll="scrollHandler"
+        @pulling-down="onPullingDown"
+        @pulling-up="onPullingUp">
 
-        <div>
-          <div class="tab-icon-box">
-            <svg class="tab-icon" aria-hidden="true">
-              <use xlink:href="#icon-jilu"></use>
-            </svg>
-          </div>
-          <div class="title">随便点</div>
-        </div>
+        <div class="page_content">
+        
+          <!-- 顶部tab栏 -->
+          <div class="tab-container">
 
-        <div>
-          <div class="tab-icon-box">
-            <svg class="tab-icon" aria-hidden="true">
-              <use xlink:href="#icon-remen"></use>
-            </svg>
-          </div>
-          <div class="title">热销榜</div>
-        </div>
-
-        <div>
-          <div class="tab-icon-box">
-            <svg class="tab-icon" aria-hidden="true">
-              <use xlink:href="#icon-chakanlishi-default"></use>
-            </svg>
-          </div>
-          <div class="title">点过的菜</div>
-        </div>
-
-        <div>
-          <div class="tab-icon-box">
-            <svg class="tab-icon" aria-hidden="true">
-              <use xlink:href="#icon-icon_canyin"></use>
-            </svg>
-          </div>
-          <div class="title">服务铃</div>
-        </div>
-
-      </div>
-
-      <!-- <div class="recommend-container">
-        <i class="separate-title-line"></i>
-        <span class="title separate-title">店家推荐</span>
-        <i class="separate-title-line"></i>
-      </div> -->
-
-      <van-divider 
-        :style="{ color: '#333', borderColor: '#555', padding: '0 1.8rem' }">
-        店家推荐
-      </van-divider>
-
-      <!-- 横向滚动 -->
-      <div class="tab-wrapper" ref="tabWrapper">
-        <ul class="tab-content" ref="tabContent">
-          <li class="tab-item" v-for="(item, i) in bannerList" :key="i" ref="tabItem">
-
-            <!-- 菜品主图 -->
-            <img :src="item.dishImgUrl" class="dish_img">
-
-            <!-- 菜品信息 -->
-            <div class="dish_info_box">
-
-              <div class="dish_title_box">
-                <span class="title_text">{{ item.dishName }}</span>
-
-                <!-- <svg class="hot_dish_icon" aria-hidden="true" v-for="(cell, j) in item.praiseDegree" :key="j">
-                  <use xlink:href="#icon-dianzan"></use>
-                </svg> -->
-
-                <van-icon 
-                  name="good-job" 
-                  color="#FFD31C" 
-                  size="0.4rem" 
-                  v-for="(cell, j) in item.praiseDegree" 
-                  :key="j"
-                />
-
-              </div>
-              <div class="dish_price">
-                <span class="rmb_symbol">¥</span>{{ item.dishPrice }}
-              </div>
-
-            </div>
-
-            <!-- 文字标签 -->
-            <div class="mark_box">
-              <!-- <img src="@/assets/text_mark/mark_01.png" alt="" class="mark_img">
-              <div class="mark_text_box"> -->
-                <svg class="award_icon" aria-hidden="true">
-                  <use xlink:href="#icon-jiangzhang"></use>
+            <div>
+              <div class="tab-icon-box">
+                <svg class="tab-icon" aria-hidden="true">
+                  <use xlink:href="#icon-jilu"></use>
                 </svg>
-                <span class="mark_text">本店招牌</span>
-              <!-- </div> -->
+              </div>
+              <div class="title">随便点</div>
             </div>
-            
-          </li>
-        </ul>
-      </div>
 
-      <!-- 菜品推荐列表 -->
-      <div class="dish_list">
-        <dish-list :dishList="dishRecommendationList"></dish-list>
-      </div>
+            <div>
+              <div class="tab-icon-box">
+                <svg class="tab-icon" aria-hidden="true">
+                  <use xlink:href="#icon-remen"></use>
+                </svg>
+              </div>
+              <div class="title">热销榜</div>
+            </div>
+
+            <div>
+              <div class="tab-icon-box">
+                <svg class="tab-icon" aria-hidden="true">
+                  <use xlink:href="#icon-chakanlishi-default"></use>
+                </svg>
+              </div>
+              <div class="title">点过的菜</div>
+            </div>
+
+            <div>
+              <div class="tab-icon-box">
+                <svg class="tab-icon" aria-hidden="true">
+                  <use xlink:href="#icon-icon_canyin"></use>
+                </svg>
+              </div>
+              <div class="title">服务铃</div>
+            </div>
+
+          </div>
+
+          <div v-for="(item, i) in pageData" :key="i">
+
+            <div class="recommend-container">
+              <i class="separate-title-line"></i>
+              <span class="title separate-title">{{ item.title }}</span>
+              <i class="separate-title-line"></i>
+            </div>
+
+            <!-- <van-divider 
+              :style="{ color: '#fc9153', borderColor: '#555', padding: '0 1.8rem' }">
+              {{ item.title }}
+            </van-divider> -->
+
+            <!-- 横向滚动列表 -->
+            <cube-scroll
+              ref="horizontalScroll"
+              v-if="item.bannerList"
+              direction="horizontal"
+              class="tab-wrapper">
+          
+              <ul class="tab-content" ref="tabContent">
+                <li class="tab-item" v-for="(cell, j) in item.bannerList" :key="j" ref="tabItem">
+
+                  <!-- 菜品主图 -->
+                  <img v-lazy="cell.dishImgUrl" class="dish_img">
+
+                  <!-- 菜品信息 -->
+                  <div class="dish_info_box">
+
+                    <div class="dish_title_box">
+                      <span class="title_text">{{ cell.dishName }}</span>
+
+                      <!-- <svg class="hot_dish_icon" aria-hidden="true" v-for="(one, q) in cell.praiseDegree" :key="q">
+                        <use xlink:href="#icon-dianzan"></use>
+                      </svg> -->
+
+                      <van-icon 
+                        name="good-job" 
+                        color="#FFD31C" 
+                        size="0.4rem" 
+                        v-for="(one, q) in cell.praiseDegree" 
+                        :key="q"
+                      />
+
+                    </div>
+                    <div class="dish_price">
+                      <span class="rmb_symbol">¥</span>{{ cell.dishPrice }}
+                    </div>
+
+                  </div>
+
+                  <!-- 文字标签 -->
+                  <div class="mark_box">
+                    <!-- <img src="@/assets/text_mark/mark_01.png" alt="" class="mark_img">
+                    <div class="mark_text_box"> -->
+                      <svg class="award_icon" aria-hidden="true">
+                        <use xlink:href="#icon-jiangzhang"></use>
+                      </svg>
+                      <span class="mark_text">本店招牌</span>
+                    <!-- </div> -->
+                  </div>
+                  
+                </li>
+              </ul>
+          
+            </cube-scroll>
+
+            <!-- 菜品列表 -->
+            <div class="dish_list">
+              <dish-list :dishList="item.dishs"></dish-list>
+            </div>
+
+          </div>
+        
+        </div>
+      
+      </cube-scroll>
 
     </div>
 
@@ -159,20 +184,29 @@
 
       </van-button>
     </div>
+
+    <LeftPopupBar/>
     
   </div>
 </template>
 <script>
 import BScroll from 'better-scroll'
-import dishList from '@/components/dishList'
+import DishList from '@/components/dishList'
+import data from '@/data/dishList'
+// import { delayAction } from '@/utils/common.js'
+import { ease } from '@/utils/ease.js'
+import { mapGetters, mapMutations } from 'vuex'
+import LeftPopupBar from '@/components/leftPopupBar'
 
 export default {
   name: 'home',
   components: {
-    dishList
+    DishList,
+    LeftPopupBar
   },
   data() {
     return {
+      pageData: data.dishList,
       bannerList: [
         {
           dishName: '麻婆豆腐',
@@ -199,7 +233,7 @@ export default {
           praiseDegree: 5
         },
       ],
-      scroll: null,  // BScroll实例对象
+      
       dishRecommendationList: [  // 菜品推荐列表
         {
           dishId: 1,
@@ -335,45 +369,54 @@ export default {
       keywords: '',  // 搜索关键字
       searchOpacity: 0,  // 搜索框透明度
       searchDisplay: 'none',  // 搜索框是否显示
+      scrollbar: true,
+      scrollbarFade: true,
+      // startY: 0,
+      scrollToY: -200,
+      scrollY: 0,  // 当前的页面滚动位置
+      scrollToTime: 700,
+      scrollToEasing: 'bounce',
+      scrollToEasingOptions: [
+        {
+          text: 'bounce',
+          value: 'bounce'
+        },
+        {
+          text: 'swipe',
+          value: 'swipe'
+        },
+        {
+          text: 'swipeBounce',
+          value: 'swipeBounce'
+        }
+      ],
+      customPullDown: false,
+      pullDownRefreshObj: {
+        txt: '没有新的数据了~'
+      },  // 下拉刷新页面
+      pullUpLoadObj: false  // 上拉加载更多
     }
   },
   created() {
-    this.$nextTick(() => {
-      this.InitTabScroll()
-    })
+    
   },
   mounted() {
-    let that = this
-    let content = document.querySelector('.page_content')
-    content.addEventListener('scroll', function () {
-      let scrollTop = content.scrollTop 
-      let limitHeight = parseInt(1.6 * that.rootRemToPx)
-      // console.log('scrollTop', scrollTop)
-      // console.log('limitHeight', limitHeight)
-
-      if (scrollTop > limitHeight) {
-        // this.searchDisplay = 'visible'
-        let disCount = scrollTop - limitHeight
-        if (disCount > 60) {
-          that.searchOpacity = 1
-        } else {
-          that.searchOpacity = disCount / 60
-          // console.log('searchOpacity', that.searchOpacity)
-        }
-      } else {
-        that.searchOpacity = 0
-        // this.searchDisplay = 'none'
-      }
-    })
-  },
-  beforeDestroy () {
-    // let content = document.querySelector('.page_content')
-    // content.removeEventListener('scroll')
+    if (this.home.pageScrollY) {
+      this.scrollY = this.home.pageScrollY
+      this.setSearchDisplay()
+    }
   },
   computed: {
-    rootRemToPx () {
-      let fontSize = document.documentElement.style.fontSize
-      return parseFloat(fontSize)
+    ...mapGetters(['home', 'rootRemToPx']),
+    options () {
+      return {
+        pullDownRefresh: this.pullDownRefreshObj,
+        pullUpLoad: this.pullUpLoadObj,
+        startY: -this.home.pageScrollY,
+        scrollbar: {
+          fade: true
+        }
+      }
     }
   },
   watch: {
@@ -387,32 +430,115 @@ export default {
       }
     }
   },
-  beforeRouteEnter (to, from, next) {
-    // 跳转回来的时候，回到原来的位置
-    // console.log('跳转回来-to', to)
-    // console.log('跳转回来-from', from)
-    if (to.path === '/home') {
-      next(vm => {
-        // 通过 `vm` 访问组件实例
-        let content = document.querySelector('.page_content')
-        let homePageScrollY = vm.$store.state.homePageScrollY
-        console.log('vuex-homePageScrollY', homePageScrollY)
-        content.scrollTop = homePageScrollY
-        // window.scroll(0, homePageScrollY)
-      })
+  // scrollbarObj: {
+  //   handler() {
+  //     this.rebuildScroll()
+  //   },
+  //   deep: true
+  // },
+  // startY() {
+  //   this.rebuildScroll()
+  // },
+  // beforeRouteEnter (to, from, next) {
+  //   // 跳转回来的时候，回到原来的位置
+  //   // console.log('跳转回来-to', to)
+  //   // console.log('跳转回来-from', from)
+  //   if (to.path === '/home') {
+  //     next(vm => {
+  //       // 通过 `vm` 访问组件实例
+  //       vm.$nextTick(() => {
+          
+  //         // setTimeout(() => {
+  //           let content = document.querySelector('.page_wrapper')
+  //           var pageScrollY = vm.$store.state.pageScrollY
+
+  //           console.log('跳回主页vuex-pageScrollY', pageScrollY)
+  //           console.log('content', content)
+  //           console.log('content-scrollTop', content.scrollTop)
+
+  //           // content.scrollTop = pageScrollY
+  //           // content.scroll(0, pageScrollY)
+
+  //           console.log('content.scrollTop' , content.scrollTop)
+
+  //         // }, 310) 
+  //         // window.scroll(0, pageScrollY)
+  //       })
+        
+  //     })
       
-    }
-    // next()
-  },
+  //   }
+  //   // next()
+  // },
+  // 离开路由时把页面位置存起来
   beforeRouteLeave(to, from, next) {
-    let content = document.querySelector('.page_content')
-    let scrollTop = content.scrollTop //记录离开页面的位置
-    if (scrollTop == null) scrollTop = 0
-    console.log('离开时的scrollTop', scrollTop)
-    this.$store.commit('setHomePageScrollY', scrollTop) //离开路由时把位置存起来
+    console.log('离开时的scrollTop', this.scrollY)
+    this.setPageScrollY(this.scrollY)
     next()
   },
   methods: {
+    // 监听下拉页面滚动
+    scrollHandler (pos) {
+      // console.log('scroll', pos)
+      this.scrollY = -pos.y
+      this.setSearchDisplay()
+    },
+    // 设置搜索框的显示与隐藏
+    setSearchDisplay () {
+      let limitHeight = parseInt(1.6 * this.rootRemToPx)
+      if (this.scrollY > limitHeight) {
+        let disCount = this.scrollY - limitHeight
+        if (disCount > 60) {
+          this.searchOpacity = 1
+        } else {
+          this.searchOpacity = disCount / 60
+        }
+      } else {
+        this.searchOpacity = 0
+      }
+    },
+    rebuildScroll() {
+      Vue.nextTick(() => {
+        this.$refs.scroll.destroy()
+        this.$refs.scroll.initScroll()
+      })
+    },
+    scrollTo() {
+      this.$refs.scroll.scrollTo(
+        0,
+        this.scrollToY,
+        this.scrollToTime,
+        ease[this.scrollToEasing]
+      )
+    },
+    onPullingDown() {
+      // 模拟更新数据
+      console.log('触发了下拉刷新')
+      setTimeout(() => {
+        // if (Math.random() > 0.5) {
+        //   // 如果有新数据
+        //   // this.items.unshift(_foods[1])
+        // } else {
+        //   // 如果没有新数据
+        //   this.$refs.scroll.forceUpdate()
+        // }
+        this.$refs.scroll.forceUpdate()
+      }, 1000)
+    },
+    onPullingUp() {
+      console.log('触发了上拉加载更多')
+      // 模拟更新数据
+      // setTimeout(() => {
+      //   if (Math.random() > 0.5) {
+      //     // 如果有新数据
+      //     let newPage = _foods.slice(0, 5)
+      //     this.items = this.items.concat(newPage)
+      //   } else {
+      //     // 如果没有新数据
+      //     this.$refs.scroll.forceUpdate()
+      //   }
+      // }, 1000)
+    },
     // 点击搜索菜品按钮
     searchDishes () {
       if (this.isSearchInputShow) {
@@ -423,30 +549,8 @@ export default {
         this.isSearchInputShow = true
       }
     },
-    // 滚动轮播
-    InitTabScroll () {
-      let width = 0
-      for (let i = 0; i < this.bannerList.length; i++) {
-        // getBoundingClientRect() 返回元素的大小及其相对于视口的位置
-        // 动态计算出滚动区域的大小
-        width += this.$refs.tabItem[0].getBoundingClientRect().width + 0.2 * this.rootRemToPx
-      }
-      this.$refs.tabContent.style.width = width - 0.2 * this.rootRemToPx + 'px'
-      this.$nextTick(() => {
-        if (!this.scroll) {
-          this.scroll = new BScroll(this.$refs.tabWrapper, {
-            startX: 0,
-            click: true,
-            scrollX: true,
-            scrollY: false,
-            eventPassthrough: 'vertical'
-          })
-        } else {
-          this.scroll.refresh() // 如果dom结构发生改变调用该方法
-        }
-      })
-    }
-  },
+    ...mapMutations(['setPageScrollY'])
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -465,11 +569,11 @@ export default {
       filter blur(12px)
     }
     // 解决ios固定定位失效（输入框获取焦点之后）
-    .page_content {
+    .page_wrapper {
       // height 100%
       // margin 0 auto
       position fixed
-      padding 0.4rem 0.15rem 0
+      // padding 0.4rem 0.15rem 0
       top 0
       left 0
       bottom 0
@@ -479,6 +583,13 @@ export default {
       // height auto
       -webkit-overflow-scrolling touch
       z-index 1
+      >>>.cube-pulldown .cube-pulldown-loaded {
+        font-size 0.3rem
+      }
+    }
+
+    .page_content {
+      padding 0.4rem 0.15rem 0
     }
 
     .tab-container {
@@ -518,18 +629,20 @@ export default {
 
     .recommend-container {
       height 1.2rem
-      // display flex
-      // align-items center
-      // justify-content center
+      display flex
+      align-items center
+      justify-content center
       .title {
         font-size 0.3rem
         margin 0 0.5rem
+        color #333
       }
 
       .separate-title-line {
         height 1px
         width 1rem
-        background-color #666
+        background-color #333
+        transform scaleY(0.5)  // 比1px更细的线
       }
     }
     // 横向滑动banner
@@ -537,7 +650,10 @@ export default {
       height 5rem
       width 100%
       overflow hidden
-
+      margin-bottom 0.8rem
+      >>>.cube-scroll-content {
+        display inline-block
+      }
       .tab-content {
         // display flex
         white-space nowrap
@@ -546,7 +662,8 @@ export default {
 
       .tab-item {
         width 90vw
-        height 100%
+        // height 100%
+        height 5rem
         // overflow hidden
         display inline-block
         margin-right 0.2rem
@@ -654,7 +771,7 @@ export default {
     }
 
     .dish_list {
-      padding-top 0.8rem
+      // padding-top 0.8rem
     }
 
     .rmb_symbol {

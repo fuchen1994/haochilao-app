@@ -3,21 +3,23 @@ import Vuex from 'vuex'
 import getters from './getters'
 
 import user from './modules/user'
+import home from './modules/home'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    homePageScrollY: 0  // 记录离开当前页面滚动条的位置
+    rootRemToPx: 0  // 当前根节点字体大小px
   },
   mutations: {
-    setHomePageScrollY(state, homePageScrollY) { 
-      state.homePageScrollY = homePageScrollY
+    setRootRemToPx (state, value) {
+      state.rootRemToPx = value
     }
   },
   actions: {},
   getters,
   modules: {
-    user
+    user,
+    home
   }
 })
