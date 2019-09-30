@@ -1,13 +1,11 @@
 <template>
 	<ul class="dish_list_container">
 		<li v-for="(item, i) in dishList" :key="i" @click="goDishDetail(item)">
-
 			<div class="dish_content">
-
 				<!-- 上部分 -->
 				<div class="dish_img_box">
 					<!-- 菜图 -->
-					<img v-lazy="item.dishImgUrl"/>
+					<img v-lazy="item.dishImgUrl" />
 
 					<!-- 辣椒图标,好评度图标 -->
 					<div class="dish_icon_box">
@@ -17,28 +15,33 @@
 
 						<!-- <svg class="dish_icon" aria-hidden="true" v-for="(cell, j) in item.praiseDegree" :key="j">
 							<use xlink:href="#icon-dianzan" />
-						</svg> -->
+						</svg>-->
 
-						<van-icon 
-              name="good-job" 
-              color="#FFD31C" 
-              size="0.3rem" 
-              v-for="(cell, j) in item.praiseDegree" 
-              :key="j"
+						<van-icon
+							name="good-job"
+							color="#FFD31C"
+							size="0.3rem"
+							v-for="(cell, j) in item.praiseDegree"
+							:key="j"
 						/>
-
 					</div>
 				</div>
 
 				<!-- 下部分 -->
 				<div class="dish_info">
 					<div class="dish_name text_over_hidden">{{ item.dishName }}</div>
-					<div class="dish_price">
-						<span class="rmb_symbol">¥</span>
-						{{ item.dishPrice }}
+					<div class="dish_price_box">
+						<span class="dish_price">
+							<span class="rmb_symbol">¥</span>{{ item.dishPrice }}
+						</span>
+
+						<div class="love_box">
+							<span class="iconfont icon-dianzan2" v-show="!item.isLove"></span>
+							<span class="iconfont icon-dianzan1" v-show="item.isLove"></span>
+							<span class="lovers">{{ item.lovers }}</span>
+						</div>
 					</div>
 				</div>
-
 			</div>
 
 			<!-- 热门标签 -->
@@ -48,23 +51,23 @@
 
 			<!-- 角标（已点的数量） -->
 			<span class="ordered_count_mark" v-if="Number(item.orderedCount)">{{ item.orderedCount }}</span>
-
 		</li>
 	</ul>
 </template>
 <script>
 export default {
-	name: 'dishList',
+	name: "dishList",
 	data() {
 		return {};
-  },
-  props: ['dishList'],
-  methods: {
-    // 跳到菜品详情
-    goDishDetail (item) {
-      this.$router.push(`/dishDetail/${ item.dishId }`)
-    }
-  },
+	},
+	props: ["dishList"],
+	methods: {
+		// 跳到菜品详情
+		goDishDetail(item) {
+			// this.$router.push(`/dishDetail/${item.dishId}`);
+			this.$emit('setDishDetailShow', true)
+		}
+	}
 };
 </script>
 <style lang="stylus" scoped>
@@ -90,9 +93,11 @@ export default {
 	.dish_content {
 		height: 100%;
 		background-color: #fff;
-		border-bottom-left-radius: 0.07rem;
-		border-bottom-right-radius: 0.07rem;
+		// border-bottom-left-radius: 0.07rem;
+		// border-bottom-right-radius: 0.07rem;
+		border-radius: 0.07rem;
 		overflow: hidden;
+		box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0.2);
 	}
 
 	.dish_img_box {
@@ -120,7 +125,34 @@ export default {
 		font-weight: 600;
 	}
 
+	.dish_price_box {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 0.5rem;
+
+		.iconfont {
+			margin-right: 0.05rem;
+			font-size: 0.3rem;
+		}
+
+		.iconfont.icon-dianzan1 {
+			color: #EC313D;
+		}
+	}
+
+	.love_box {
+		display flex
+		justify-content flex-end
+		align-items center
+	}
+
 	.dish_price {
+		font-size: 0.28rem;
+		color: #ec6045;
+	}
+
+	.lovers {
 		font-size: 0.25rem;
 		color: #666;
 	}
@@ -175,6 +207,9 @@ export default {
 			overflow: hidden;
 			margin-right: 0;
 		}
+	}
+	.rmb_symbol {
+		margin-right: 0.03rem;
 	}
 }
 </style>

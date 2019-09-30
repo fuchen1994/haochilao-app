@@ -18,8 +18,8 @@ document.body.addEventListener('touchstart', function () {})
 import './assets/fontIcon/iconfont.js'
 import './assets/fontIcon/iconfont.css'
 
-import loadmore from './utils/loadMore'
-Vue.directive('loadmore', loadmore)
+// import loadmore from './utils/loadMore'
+// Vue.directive('loadmore', loadmore)
 
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload)
