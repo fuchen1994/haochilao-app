@@ -97,6 +97,13 @@
       "unicode_decimal": 58887
     },
     {
+      "icon_id": "1510317",
+      "name": "编辑",
+      "font_class": "edit",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
       "icon_id": "1527879",
       "name": "菜单",
       "font_class": "caidan",
@@ -165,6 +172,13 @@
       "font_class": "remen",
       "unicode": "e643",
       "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "3742846",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
     },
     {
       "icon_id": "3826032",
@@ -298,6 +312,13 @@
       "font_class": "gongdanqueren",
       "unicode": "ec36",
       "unicode_decimal": 60470
+    },
+    {
+      "icon_id": "6085760",
+      "name": "编辑2",
+      "font_class": "bianji2",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
     },
     {
       "icon_id": "6337586",

@@ -5,89 +5,29 @@ import store from '../store'
 // console.log(process.env)
 const _import = require('./_import_' + process.env.NODE_ENV)
 
+// 404页
+const NotFound = _import('notFound/index')
 // 登录页
 const Login = _import('login/index')
 // 主页
 const Home = _import('home/index')
 // 菜品详情页
 const dishDetail = _import('dishDetail/index')
-// 404页
-const NotFound = _import('notFound/index')
+// 购物车
+const ShoppingCart = _import('shoppingCart/index')
+// 导航按钮组
+const TabButtons = _import('tabButtons/index')
 
 Vue.use(Router)
-
-const scrollBehavior = function (to, from, savedPosition) {
-  if (savedPosition) {
-    // savedPosition is only available for popstate navigations.
-    return savedPosition
-  } else {
-    // const position = {}
-
-    console.log('路由中的 to', to)
-
-    if (to.path == '/home') {
-      console.log('路由中的store.state.homePageScrollY', store.state.homePageScrollY)
-
-      return position.selector = '.page_content'
-
-      // return new Promise((resolve, reject) => {
-      //   setTimeout(() => {
-      //     resolve({ x: 0, y: store.state.homePageScrollY })
-      //   }, 500)
-      // })
-    }
-
-      // return new Promise(resolve => {
-       
-      //   position.x = 0
-      //   position.y = store.state.homePageScrollY
-      // }
-
-    // scroll to anchor by returning the selector
-    // if (to.hash) {
-    //   position.selector = to.hash
-
-    //   // specify offset of the element
-    //   if (to.hash === '#anchor2') {
-    //     position.offset = { y: 100 }
-    //   }
-
-    //   // bypass #1number check
-    //   if (/^#\d/.test(to.hash) || document.querySelector(to.hash)) {
-    //     return position
-    //   }
-
-    //   return false
-    // }
-
-    // return new Promise(resolve => {
-    //   // check if any matched route config has meta that requires scrolling to top
-    //   if (to.matched.some(m => m.meta.scrollToTop)) {
-    //     position.x = 0
-    //     position.y = 0
-    //   } else {
-    //     position.y = store.state.homePageScrollY
-    //   }
-
-    //   this.app.$root.$once('triggerScroll', () => {
-    //     resolve(position)
-    //   })
-    // })
-  }
-}
 
 export default new Router({
   // 对于所有路由导航，让页面滚动到顶部
   // scrollBehavior: () => ({
   //   y: 0
   // }),
-  // mode: 'history',
-  // base: __dirname,
-  // scrollBehavior,
-  routes: [
-    {
+  routes: [{
       path: '/',
-      redirect: '/home'
+      redirect: '/dish'
     },
     {
       path: '*',
@@ -100,18 +40,42 @@ export default new Router({
       component: Login
     },
     {
-      path: '/home',
-      component: Home,
-      name: 'home',
-      meta: {
-        keepAlive: true
-      }
+      path: '/dish',
+      name: 'dish',
+      component: TabButtons,
+      children: [
+        {
+          path: '',
+          component: Home,
+          name: 'home',
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: 'shoppingCart',
+          component: ShoppingCart,
+          name: 'shoppingCart'
+        }
+      ]
     },
-    {
-      path: '/dishDetail/:id',
-      component: dishDetail,
-      name: 'dishDetail'
-    }
-    
+    // {
+    //   path: '/home',
+    //   component: Home,
+    //   name: 'home',
+    //   meta: {
+    //     keepAlive: true
+    //   }
+    // },
+    // {
+    //   path: '/shoppingCart',
+    //   component: ShoppingCart,
+    //   name: 'shoppingCart'
+    // }
+    // {
+    //   path: '/dishDetail/:id',
+    //   component: dishDetail,
+    //   name: 'dishDetail'
+    // }
   ]
 })

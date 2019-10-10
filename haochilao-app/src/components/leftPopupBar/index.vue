@@ -1,7 +1,7 @@
 <template>
 	<div class="left-popup-bar-container">
 		<div class="tabbar-box">
-			<div class="modal" v-show="isTabbarShow" @click="openTabbar"></div>
+			<div class="modal" v-show="isTabbarShow" @click="closeTabbar"></div>
 			<div :class="[
         'modal-content',
         { show: isTabbarShow }
@@ -158,6 +158,9 @@ export default {
 				this.isTabbarShow = true;
 			}
 		},
+		closeTabbar() {
+			this.isTabbarShow = false;
+		},
 		// 选择菜品
 		chooseDishClassify(item, index) {
       // this.currentDishClassifyId = item.id;  没有使用id
@@ -170,7 +173,7 @@ export default {
 		checkAction() {
 			if (timer) clearTimeout(timer);
 			timer = setTimeout(() => {
-				this.openTabbar();
+				this.closeTabbar();
 			}, 750)
 		}
 	}

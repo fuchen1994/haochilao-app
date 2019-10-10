@@ -4,7 +4,7 @@
       <use xlink:href="#icon-in-love"></use>
 		</svg>-->
 		<!-- 背景图 -->
-		<div class="bg-cover"></div>
+		<img src="../../assets/bg/bg-09.jpg" class="bg_img">
 
 		<div class="page_wrapper" ref="homePageContent">
 			<cube-scroll
@@ -13,55 +13,91 @@
 				:scroll-events="['scroll', 'scroll-end']"
 				@scroll="scrollHandler"
         @scroll-end="scrollEndHandler"
-				@pulling-down="onPullingDown"
-			>
+				@pulling-down="onPullingDown">
+
+				<!-- 通告栏 -->
+				<!-- 在betterscroll下，使用框架组件或自定义组件，只要使用animation属性，就会导致整个页面滑动卡顿，不知是何原因，于是采用相对定位去写滚动，这种不会导致滑动卡顿 -->
+				<!-- <div class="marquee_wrapper">
+					<div class="marquee_box" ref="marqueeBox">
+						<div ref="marqueeInner" class="marquee" :style="{
+							paddingLeft: marqueePL + 'px',
+							animationDuration: marqueeDuration + 'ms'
+						}">
+							今天有新菜推荐，酱板鸭好吃的不得了欢迎尝试试试！
+						</div>
+					</div>
+				</div> -->
+
+				<div class="marquee_wrapper" v-show="isMarqueeShow">
+					<van-icon name="cross" color="#ed6a0c" size="0.29rem" @click="closeMarquee"/>
+					<div class="marquee_box" ref="marqueeBox">
+						<span class="empty" ref="marqueeEmpty"></span>
+						<div ref="marqueeInner" class="text" :style="{ left: -marqueeLeft + 'px' }">
+							今天有新菜推荐，酱板鸭好吃的不得了欢迎尝试吃，还有好多好吃的菜，请慢慢享用！
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="marquee_component">
+					<van-notice-bar
+						mode="closeable"
+						text="足协杯战线连续第2年上演广州德比战，上赛季半决赛上恒大以两回合5-3的总比分淘汰富力。"
+					/>
+				</div> -->
+
 				<div class="page_content">
 					<!-- 顶部tab栏 -->
 					<div class="tab-container">
-						<div>
+						<van-button color="transparent">
 							<div class="tab-icon-box">
 								<svg class="tab-icon" aria-hidden="true">
 									<use xlink:href="#icon-jilu" />
 								</svg>
 							</div>
 							<div class="title">随便点</div>
-						</div>
+						</van-button>
 
-						<div>
+						<van-button color="transparent">
 							<div class="tab-icon-box">
 								<svg class="tab-icon" aria-hidden="true">
 									<use xlink:href="#icon-remen" />
 								</svg>
 							</div>
 							<div class="title">热销榜</div>
-						</div>
+						</van-button>
 
-						<div>
+						<van-button color="transparent">
 							<div class="tab-icon-box">
 								<svg class="tab-icon" aria-hidden="true">
 									<use xlink:href="#icon-chakanlishi-default" />
 								</svg>
 							</div>
 							<div class="title">点过的菜</div>
-						</div>
+						</van-button>
 
-						<div>
+						<van-button color="transparent">
 							<div class="tab-icon-box">
 								<svg class="tab-icon" aria-hidden="true">
 									<use xlink:href="#icon-icon_canyin" />
 								</svg>
 							</div>
 							<div class="title">服务铃</div>
-						</div>
+						</van-button>
 					</div>
 
 					<div v-for="(item, i) in pageData" :key="i" ref="listItem">
 
             <!-- 推荐标题 -->
-						<div class="recommend-container">
+						<!-- <div class="recommend-container">
 							<i class="separate-title-line"></i>
-							<span class="title separate-title">{{ item.title }}</span>
+							<span class="title separate-title"></span>
 							<i class="separate-title-line"></i>
+						</div> -->
+
+						<div class="recommend_box">
+							<div class="border">
+								<span class="title">{{ item.title }}</span>
+							</div>
 						</div>
 
 						<!-- <van-divider 
@@ -74,8 +110,7 @@
 							ref="horizontalScroll"
 							v-if="item.bannerList"
 							direction="horizontal"
-							class="tab-wrapper"
-						>
+							class="tab-wrapper">
 							<ul class="tab-content" ref="tabContent">
 								<li class="tab-item" v-for="(cell, j) in item.bannerList" :key="j" ref="tabItem">
 									<!-- 菜品主图 -->
@@ -114,6 +149,7 @@
 										<span class="mark_text">本店招牌</span>
 										<!-- </div> -->
 									</div>
+
 								</li>
 							</ul>
 						</cube-scroll>
@@ -122,8 +158,13 @@
 						<div class="dish_list">
 							<dish-list :dishList="item.dishs" @setDishDetailShow="setDishDetailShow"></dish-list>
 						</div>
+
 					</div>
 				</div>
+
+				<!-- 页尾图片 -->
+				<page-bottom></page-bottom>
+
 			</cube-scroll>
 		</div>
 
@@ -135,40 +176,12 @@
 				:class="['search_input', { input_change: isSearchInputShow }]"
 				v-model="keywords"
 				@blur="searchDishes"
-				placeholder="请输入想要点的菜名"
-			/>
+				placeholder="请输入想要点的菜名"/>
 
 			<!-- 搜索图标 -->
 			<svg class="search_icon" aria-hidden="true" @click="searchDishes">
 				<use xlink:href="#icon-icon-test" />
 			</svg>
-		</div>
-
-		<!-- 导航按钮 -->
-		<!-- <div class="navigation_btn">
-      <span class="iconfont icon-917caidan_fenlei"></span>
-      <div class="navigation_text"></div>
-		</div>-->
-
-		<!-- 导航按钮（带有点击效果） -->
-		<div class="fixed_btn_box navigation_btn2">
-			<van-button color="transparent">
-				<span class="iconfont icon-917caidan_fenlei"></span>
-				<span class="navigation_text">导航</span>
-			</van-button>
-		</div>
-
-		<!-- 购物车按钮 -->
-		<div class="fixed_btn_box shopping_cart_btn">
-			<van-button color="transparent">
-				<span class="iconfont icon-gouwuche1"></span>
-
-				<!-- <svg class="shopping_cart_icon" aria-hidden="true">
-          <use xlink:href="#icon-gouwuche4"></use>
-				</svg>-->
-
-				<span class="navigation_text">点菜单</span>
-			</van-button>
 		</div>
 
     <!-- 左侧分类导航 -->
@@ -180,16 +193,18 @@
     <!-- 详情页 -->
 		<transition name="page-move">
       <DishDetail 
-        v-if="isDishDetailShow" 
+        v-show="isDishDetailShow" 
         @setDishDetailShow="setDishDetailShow" 
         @getPageData="getPageData"/>
 		</transition>
 	</div>
 </template>
 <script>
+let marqueeTimer;
 import BScroll from "better-scroll";
 import DishList from "@/components/dishList";
 import LeftPopupBar from "@/components/leftPopupBar";
+import PageBottom from "@/components/pageBottom";
 import DishDetail from '../dishDetail'
 import { mapGetters, mapMutations } from "vuex";
 import { ease } from "@/utils/ease.js";
@@ -202,7 +217,8 @@ export default {
 	components: {
 		DishList,
     LeftPopupBar,
-    DishDetail
+		DishDetail,
+		PageBottom
 	},
 	data() {
 		return {
@@ -235,21 +251,30 @@ export default {
       currentViewIndex: '',  // 当前显示的菜单项
       currentActiveIndex: '',  // 当前滑动停止，显示的菜单项
       isJumping: false,
-      scrollSpeed: 750
+			scrollSpeed: 750,
+			// marqueePL: 0,
+			// marqueeDuration: 5000,
+			marqueeLeft: 0,
+			maxLeft: 0,
+			isMarqueeShow: true  // 是否显示通知
 		};
 	},
 	created() {
-		this.getPageData();
 	},
 	mounted() {
-		this.$nextTick(() => {
-			this.rebuildScroll();
-		});
+		this.getPageData();
+		this.rebuildScroll();
+		// this.initMarquee();
+		this.setMaxLeft();
+		marqueeTimer = setInterval(this.setMarquee, 18)
 		if (this.home.pageScrollY) {
 			this.scrollY = this.home.pageScrollY;
 			this.setSearchDisplay();
     }
     
+	},
+	beforeDestroy() {
+		if (marqueeTimer) clearInterval(marqueeTimer)
 	},
 	computed: {
 		...mapGetters(["home", "rootRemToPx"]),
@@ -280,12 +305,36 @@ export default {
     }
 	},
 	// 离开路由时把页面位置存起来
-	// beforeRouteLeave(to, from, next) {
-	// 	console.log("离开时的scrollTop", this.scrollY);
-	// 	this.setPageScrollY(this.scrollY);
-	// 	next();
-	// },
+	beforeRouteLeave(to, from, next) {
+		console.log("离开时的scrollTop", this.scrollY);
+		this.setPageScrollY(this.scrollY);
+		next();
+	},
 	methods: {
+		closeMarquee() {
+			this.isMarqueeShow = false;
+		},
+		setMarquee() {
+			this.marqueeLeft++;
+			if (this.marqueeLeft > this.maxLeft) {
+				this.marqueeLeft = 0
+			}
+		},
+		setMaxLeft() {
+			this.$nextTick(() => {
+				let E_width = this.$refs.marqueeEmpty.offsetWidth;
+				let M_width = this.$refs.marqueeInner.offsetWidth;
+				this.maxLeft = E_width + M_width
+			})
+		},
+		initMarquee() {
+			this.$nextTick(() => {
+				let M_width = this.$refs.marqueeInner.offsetWidth;
+				console.log('M_width', M_width);
+
+				this.marqueePL = this.$refs.marqueeBox.offsetWidth;
+			})
+		},
     // 点击了左侧分类
     activeLabelChange(index) {
       this.isJumping = true;
@@ -385,7 +434,7 @@ export default {
           currentIndex = parseInt(key)
         }
       }
-      console.log('currentIndex', currentIndex)
+      console.log('currentIndex111111111----', currentIndex)
       console.log('top110', top)
       console.log('this.scrollY', this.scrollY)
 
@@ -420,25 +469,29 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-.page-move-enter, .page-move-leave-active {
-	transform: translate(100%, 0);
-}
-
-.page-move-enter-active, .page-move-leave-active {
-	transition: transform 0.3s;
-}
 
 .home-page {
 	// min-height 100vh
-	.bg-cover {
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		z-index: -1;
-		background: url('../../assets/bg/bg-10.jpg') center top no-repeat;
-		background-size: cover;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	// .bg-cover {
+	// 	position: fixed;
+	// 	top: 0;
+	// 	right: 0;
+	// 	bottom: 0;
+	// 	left: 0;
+	// 	z-index: -1;
+	// 	background: url('../../assets/bg/bg-10.jpg') center top no-repeat;
+	// 	background-size: cover;
+	// 	filter: blur(12px);
+	// }
+	.bg_img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 		filter: blur(12px);
 	}
 
@@ -446,16 +499,17 @@ export default {
 	.page_wrapper {
 		// height 100%
 		// margin 0 auto
-		position: fixed;
+		position: absolute;
 		// padding 0.4rem 0.15rem 0
 		top: 0;
 		left: 0;
 		bottom: 0;
 		right: 0;
-		overflow-y: scroll;
+		overflow: hidden;
+		// overflow-y: scroll;
 		// width 100%
 		// height auto
-		-webkit-overflow-scrolling: touch;
+		// -webkit-overflow-scrolling: touch;
 		z-index: 1;
 
 		>>>.cube-pulldown .cube-pulldown-loaded {
@@ -465,6 +519,7 @@ export default {
 
 	.page_content {
 		padding: 0.4rem 0.15rem 0;
+		position: relative;
 	}
 
 	.tab-container {
@@ -474,13 +529,27 @@ export default {
 		box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0.2);
 		display: flex;
 		text-align: center;
-		font-size: 0.25rem;
+		
 		overflow: hidden;
+		margin-bottom: 0.15rem;
 
-		>div {
-			padding-top: 0.2rem;
+		>>>.van-button {
+			padding: 0;
 			width: 25%;
-			border-right: 1px solid #eeeeee;
+			height: 100%;
+			display: block;
+			// border-right: 1px solid #eeeeee;
+			.van-button__text {
+				padding-top: 0.11rem;
+				line-height: 0.4rem;
+				display: flex;
+				height: 100%;
+				width: 100%;
+				flex-flow: column wrap;
+				justify-content: center;
+				align-items: center;
+				user-select: none;
+			}
 		}
 
 		>div:last-child {
@@ -489,6 +558,8 @@ export default {
 
 		.title {
 			padding-top: 0.07rem;
+			color: #333;
+			font-size: 0.25rem;
 		}
 	}
 
@@ -518,6 +589,24 @@ export default {
 			width: 1rem;
 			background-color: #333;
 			transform: scaleY(0.5); // 比1px更细的线
+		}
+	}
+
+	.recommend_box {
+		height: 1.5rem;
+		.border {
+			height: 100%;
+			width: 2.5rem;
+			margin: 0 auto;
+			background: url('../../assets/border/text_border2.png') center top no-repeat;
+			background-size: 100%;
+			padding-left: 0.35rem;
+			padding-top: 0.07rem;
+			text-align: center;
+		}
+		.title {
+			font-size: 0.3rem;
+			color: #a44d1f;
 		}
 	}
 
@@ -711,102 +800,59 @@ export default {
 		}
 	}
 
-	.navigation_btn {
-		position: fixed;
-		bottom: 0.4rem;
-		left: 0.4rem;
-		z-index: 100;
-		width: 1.2rem;
-		height: 1.2rem;
-		border-radius: 50%;
-		background-color: rgba(255, 255, 255, 0.9);
-		box-shadow: 0 0.08rem 0.1rem rgba(0, 0, 0, 0.3);
-		overflow: hidden;
-		display: flex;
-		flex-flow: column wrap;
-		justify-content: center;
-		align-items: center;
+}
 
-		.iconfont {
-			font-size: 0.43rem;
-		}
+// @keyframes marquee {
+// 	0%  { transform: translateX(0); }
+// 	100% { transform: translateX(-100%);}
+// }
 
-		.navigation_text {
-			padding-top: 0.03rem;
-			font-size: 0.22rem;
-		}
-	}
-
-	.fixed_btn_box {
-		position: fixed;
-		z-index: 100;
-		width: 1.2rem;
-		height: 1.2rem;
-		border-radius: 50%;
-		// background-color #fff
-		box-shadow: 0 0.08rem 0.1rem rgba(0, 0, 0, 0.3);
-		overflow: hidden;
-
-		>>>.van-button {
-			padding: 0;
-			width: 100%;
-			height: 100%;
-			display: block;
-			border-radius: 50%;
-
-			.van-button__text {
-				padding-top: 0.05rem;
-				line-height: 0.4rem;
-				display: flex;
-				height: 100%;
-				width: 100%;
-				flex-flow: column wrap;
-				justify-content: center;
-				align-items: center;
-				border-radius: 50%;
-				user-select: none;
-			}
-		}
-
-		.iconfont {
-			font-size: 0.43rem;
-		}
-
-		.navigation_text {
-			padding-top: 0.03rem;
-			font-size: 0.24rem;
-			letter-spacing: 0.02rem;
-		}
-	}
-
-	.navigation_btn2 {
-		bottom: 0.4rem;
-		left: 0.4rem;
-		background-color: rgba(255, 255, 255, 0.9);
-
-		>>>.van-button__text {
-			color: #333;
-		}
-	}
-
-	.shopping_cart_btn {
-		bottom: 0.4rem;
-		right: 0.4rem;
-		background-color: rgba(249, 64, 46, 0.9);
-
-		// background-color rgba(227, 56, 24, 0.9)
-		.iconfont {
-			font-size: 0.45rem;
-		}
-
-		.shopping_cart_icon {
-			width: 0.4rem;
-			height: 0.4rem;
-			// vertical-align -0.02rem
-			fill: currentColor;
-			overflow: hidden;
-			margin-right: 0;
-		}
+.marquee_wrapper {
+	width: 100%;
+	padding: 0.22rem 0.7rem 0.2rem 0.15rem;
+	background-color: #fffbe8;
+	font-size: 0.28rem;
+	position: relative;
+	>>>.van-icon-cross {
+		position: absolute;
+		top: 0.2rem;
+		right: 0.25rem;
 	}
 }
+
+.marquee_box {
+	width: 100%;
+	height: 0.32rem;
+	overflow: hidden;
+	white-space: nowrap;
+	.text {
+		display: inline-block;
+		position: relative;
+		top: 0.02rem;
+		color: #ed6a0c;
+	}
+	.empty {
+		display: inline-block;
+		width: 100%;
+	}
+}
+
+// .marquee {
+// 	// animation: marquee 5s linear infinite both;
+// 	animation-name: marquee;
+// 	// animation-duration: 5s;
+// 	animation-timing-function: linear;
+// 	animation-iteration-count: infinite;
+// 	animation-fill-mode: both;
+// 	display: inline-block;
+// 	white-space: nowrap;
+// }
+
+// .marquee_component {
+// 	position: absolute;
+// 	top: 0;
+// 	left: 0;
+// 	right: 0;
+// }
+
 </style>

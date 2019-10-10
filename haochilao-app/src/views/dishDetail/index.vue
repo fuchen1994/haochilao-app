@@ -5,10 +5,8 @@
       <span class="text">返回</span>
     </div>
 
-    <cube-scroll
-      ref="scroll"
-      class="dish_detail_wrapper"
-    >
+    <cube-scroll class="dish_detail_wrapper">
+
       <div class="page_content">
         <van-swipe :autoplay="3000" :height="swiperHeight" indicator-color="#fff">
           <van-swipe-item v-for="(image, index) in detailInfo.dishImages" :key="index">
@@ -60,7 +58,7 @@
           </div>
 
           <div class="introduction">
-            <span>介绍：</span> 夏季时热的一道菜，清爽可口。夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口
+            <span>介绍：</span> 夏季时热的一道菜，清爽可口。夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口夏季时热的一道菜，清爽可口。
           </div>
 
           <div class="material">
@@ -69,13 +67,15 @@
           </div>
         </div>
       </div>
+
     </cube-scroll>
+
     <div class="tab_bottom">
       <div class="count_box">
         <span class="count_text">数量</span>
         <van-stepper
           v-model="detailInfo.orderedCount"
-          min="0"
+          min="1"
           :input-width="stepperInputWidth"
           :button-size="stepperButtonSize"
           integer
@@ -162,15 +162,23 @@ export default {
 			setTimeout(() => {
         this.isShoppingCartBtnLoading = false;
 
-				this.$toast({
-          type: 'success',
-          message: '添加成功',
-          duration: 1100
-        });
+				// this.$toast({
+        //   type: 'success',
+        //   message: '添加成功',
+        //   duration: 1100
+				// });
+				
+				this.$notify({
+					type: 'primary',
+					message: '添加成功',
+					background: '#fe6464',
+					color: '#fffbe8'
+				});
+				this.goBack();
 
-        setTimeout(() => {
-          this.goBack();
-        }, 1000)
+        // setTimeout(() => {
+        //   this.goBack();
+        // }, 1000)
 
         // 更新列表数据
         this.$emit('getPageData');
@@ -206,7 +214,7 @@ export default {
 .dish_detail_container {
 	background-color: #ffffff;
 	// padding-bottom: 1.1rem;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -217,7 +225,8 @@ export default {
   .dish_detail_wrapper {
     height: calc(100% - 1.1rem)
     width: 100%;
-    overflow: hidden;
+    overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
   }
 
 	.page_content {
@@ -311,12 +320,15 @@ export default {
 				font-size: 0.22rem;
 				color: #fff;
 				// border 1px solid #F3D3CC
-				padding: 0 0.04rem;
+				padding: 0.05rem 0.06rem 0.03rem;
 				// background-color #E92121
-				margin-left: 0.1rem;
+				// margin-left: 0.1rem;
 				background-color: #F42B2A;
 				// background-color #FF9B19
-				box-shadow: 0.02rem 0.05rem 0.1rem #F42B2A;
+				// box-shadow: 0.02rem 0.05rem 0.1rem #F42B2A;
+				position: relative;
+				top: -0.25rem;
+				right: -0.05rem;
 			}
 		}
 
@@ -369,13 +381,15 @@ export default {
 
 		.taste, .introduction, .material {
 			color: #666666;
-			font-size: 0.24rem;
-			margin-bottom: 0.1rem;
+			font-size: 0.28rem;
+			line-height: 0.32rem;
+			margin-bottom: 0.2rem;
 		}
 	}
 
 	.praiseDegree_box {
 		float: right;
+		transform: translateY(-0.07rem);
 	}
 
 	.praiseDegree_icon {
@@ -399,6 +413,7 @@ export default {
 		justify-content: space-between;
 		align-items: center;
 		padding: 0 0.2rem;
+		z-index: 302;
 
 		.count_box {
 			display: flex;

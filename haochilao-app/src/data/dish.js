@@ -1823,5 +1823,57 @@ export default {
         },
       ]
     },
+  ],
+  // 购物车列表
+  cartList: [
+    {
+      dishName: '香干肉丝饭',
+      dishImgUrl: require('@/assets/bg/bg-02.jpg'),
+      dishPrice: '56.00',
+      orderPeople: '张三',
+      orderedCount: 5
+    },
+    {
+      dishName: '武汉热干面面面面面面面面面面面面面面',
+      dishImgUrl: require('@/assets/bg/bg-03.jpg'),
+      dishPrice: '26.00',
+      orderPeople: '李四',
+      orderedCount: 1
+    },
+    {
+      dishName: '金牌叉烧饭',
+      dishImgUrl: require('@/assets/bg/bg-04.jpg'),
+      dishPrice: '33.00',
+      orderPeople: '王二麻',
+      orderedCount: 4
+    },
+    {
+      dishName: '辣椒炒肉',
+      dishImgUrl: require('@/assets/bg/bg-05.jpg'),
+      dishPrice: '10.00',
+      orderPeople: '隔壁老王',
+      orderedCount: 3
+    },
+    {
+      dishName: '蒜香鸡汁块',
+      dishImgUrl: require('@/assets/bg/bg-06.jpg'),
+      dishPrice: '52.00',
+      orderPeople: '你大爷',
+      orderedCount: 1
+    },
+    {
+      dishName: '招牌江西米粉份粉份粉份粉份粉',
+      dishImgUrl: require('@/assets/bg/bg-07.jpg'),
+      dishPrice: '44.00',
+      orderPeople: '小二',
+      orderedCount: 2
+    },
+    {
+      dishName: '武汉热干面的范德萨范德萨发送的范德萨范德萨',
+      dishImgUrl: require('@/assets/bg/bg-08.jpg'),
+      dishPrice: '66.00',
+      orderPeople: '张三李四王二麻',
+      orderedCount: 5
+    },
   ]
 }
