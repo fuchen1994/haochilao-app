@@ -1,6 +1,6 @@
 <template>
   <div class="page_container">
-    <img src="../../assets/bg/bg-10.jpg" class="bg_img">
+    <img :src="bgImg" class="bg_img">
     <cube-scroll class="page_content" ref="scroll">
       <slot></slot>
     </cube-scroll>
@@ -11,10 +11,21 @@
 export default {
   data() {
     return {
-      
+      bgImg: '',
     }
   },
+  mounted() {
+    this.randomImg();
+  },
   methods: {
+    randomImg() {
+      this.bgImg = require('../../assets/bg/bg-0' + this.getRndInteger(1, 9) + '.jpg');
+
+    },
+    // 返回 min（包含）～ max（包含）之间的数字
+    getRndInteger(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) ) + min;
+    },
     rebuildScroll() {
       this.$nextTick(() => {
 				this.$refs.scroll.destroy();

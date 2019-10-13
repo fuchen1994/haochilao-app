@@ -187,6 +187,7 @@ export default {
 		font-size: 0.25rem;
 		border-radius: 0.2rem;
 		color: #fff;
+		// border: 1px solid #fff;
 	}
 
 	.dish_icon_box {

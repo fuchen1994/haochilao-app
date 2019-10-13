@@ -15,8 +15,8 @@ const Home = _import('home/index')
 const dishDetail = _import('dishDetail/index')
 // 购物车
 const ShoppingCart = _import('shoppingCart/index')
-// 导航按钮组
-const TabButtons = _import('tabButtons/index')
+// 店铺欢迎页
+const Welcome = _import('welcome/index')
 
 Vue.use(Router)
 
@@ -27,51 +27,49 @@ export default new Router({
   // }),
   routes: [{
       path: '/',
-      redirect: '/dish'
+      redirect: '/home'
     },
     {
       path: '*',
       component: NotFound,
-      name: 'notFound'
+      name: 'notFound',
+      meta: {
+        pageIndex: -10
+      }
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: {
+        pageIndex: 0
+      }
     },
     {
-      path: '/dish',
-      name: 'dish',
-      component: TabButtons,
-      children: [
-        {
-          path: '',
-          component: Home,
-          name: 'home',
-          meta: {
-            keepAlive: true
-          }
-        },
-        {
-          path: 'shoppingCart',
-          component: ShoppingCart,
-          name: 'shoppingCart'
-        }
-      ]
+      path: '/home',
+      component: Home,
+      name: 'home',
+      meta: {
+        keepAlive: true,
+        pageIndex: 1
+      }
     },
-    // {
-    //   path: '/home',
-    //   component: Home,
-    //   name: 'home',
-    //   meta: {
-    //     keepAlive: true
-    //   }
-    // },
-    // {
-    //   path: '/shoppingCart',
-    //   component: ShoppingCart,
-    //   name: 'shoppingCart'
-    // }
+    {
+      path: '/shoppingCart',
+      component: ShoppingCart,
+      name: 'shoppingCart',
+      meta: {
+        pageIndex: 2
+      }
+    },
+    {
+      path: '/welcome',
+      component: Welcome,
+      name: 'welcome',
+      meta: {
+        pageIndex: -2
+      }
+    }
     // {
     //   path: '/dishDetail/:id',
     //   component: dishDetail,

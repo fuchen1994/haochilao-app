@@ -8,7 +8,7 @@
     <cube-scroll class="dish_detail_wrapper">
 
       <div class="page_content">
-        <van-swipe :autoplay="3000" :height="swiperHeight" indicator-color="#fff">
+        <van-swipe :autoplay="3000" :height="swiperHeight" indicator-color="#fff" :width="swiperWidth">
           <van-swipe-item v-for="(image, index) in detailInfo.dishImages" :key="index">
             <img v-lazy="image" class="dish_img" />
           </van-swipe-item>
@@ -76,8 +76,6 @@
         <van-stepper
           v-model="detailInfo.orderedCount"
           min="1"
-          :input-width="stepperInputWidth"
-          :button-size="stepperButtonSize"
           integer
         />
       </div>
@@ -136,13 +134,9 @@ export default {
 			let height = 7.5;
 			return this.rootRemToPx * height;
 		},
-		stepperInputWidth() {
-			let width = 0.8;
-			return this.rootRemToPx * width;
-		},
-		stepperButtonSize() {
-			let size = 0.8;
-			return this.rootRemToPx * size;
+		swiperWidth() {
+			var de = document.documentElement; 
+			return (de && de.offsetWidth) || document.body.offsetWidth;
 		},
 		// 折扣
 		discountNumber() {
@@ -193,7 +187,7 @@ export default {
 		},
 		goBack() {
       // this.$router.go(-1);
-      this.$emit('setDishDetailShow', false)
+      this.$emit('setDishDetailShow', false);
 		}
 	}
 };
@@ -327,7 +321,7 @@ export default {
 				// background-color #FF9B19
 				// box-shadow: 0.02rem 0.05rem 0.1rem #F42B2A;
 				position: relative;
-				top: -0.25rem;
+				top: -0.06rem;
 				right: -0.05rem;
 			}
 		}
@@ -425,14 +419,23 @@ export default {
 			line-height: 0.8rem;
 		}
 
-		>>>.van-stepper__minus, >>>.van-stepper__plus {
-			color: #EC313D;
-		}
+		>>>.van-stepper {
+      .van-stepper__minus, .van-stepper__plus {
+        color: #EC313D;
+        width: 0.8rem;
+        height: 0.8rem;
+      }
 
-		>>>.van-stepper__minus--disabled, >>>.van-stepper__plus--disabled {
-			color: #c8c9cc !important;
-			background-color: #f7f8fa;
-		}
+      .van-stepper__input {
+        width: 0.9rem;
+        height: 0.8rem;
+      }
+
+      .van-stepper__minus--disabled, .van-stepper__plus--disabled {
+        color: #c8c9cc !important;
+        background-color: #f7f8fa;
+      }
+    }
 
 		>>>.van-button {
 			width: 2rem;

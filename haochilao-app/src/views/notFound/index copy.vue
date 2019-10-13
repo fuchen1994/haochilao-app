@@ -1,7 +1,12 @@
 <template>
-	<my-page ref="myPage">
+	<div class="not-found-container">
+		<img src="../../assets/bg/bg-10.jpg" class="bg_img" />
 
-    <div class="not-found-container">
+		<!-- <div class="not-found-img">
+      <img src="@/assets/404/404.jpg" alt="">
+		</div>-->
+
+    <div class="page_content">
       <div class="warining-msg">抱歉，您访问的页面未找到！</div>
       <div class="btn-group">
         <van-button color="#0ec5a1" @click="goHomePage">返回首页</van-button>
@@ -9,16 +14,11 @@
       </div>
     </div>
 		
-	</my-page>
+	</div>
 </template>
 <script>
-import MyPage from '@/components/myPage'
-
 export default {
 	name: "notFound",
-	components: {
-		MyPage
-	},
 	// data: {
 	//   return {
 
@@ -36,6 +36,39 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .not-found-container {
+	// background-color #f1f2f4
+	// background: url('../../assets/bg/bg-10.jpg') center top no-repeat;
+	// background-size: cover;
+	// filter: blur(12px);
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	// padding-top: 2.5rem;
+
+	.bg_img {
+		width: 100%;
+    height: 100%;
+		object-fit: cover;
+		filter: blur(12px);
+	}
+
+	.not-found-img {
+		text-align: center;
+
+		img {
+			width: 80%;
+		}
+	}
+
+  .page_content {
+    position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+  }
 
 	.warining-msg {
 		font-size: 0.38rem;

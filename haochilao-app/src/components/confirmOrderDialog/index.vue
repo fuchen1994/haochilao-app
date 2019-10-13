@@ -1,29 +1,16 @@
 <template>
   <div class="edit_people_count">
     <van-dialog
-      title="修改信息"
+      title="提示"
       v-model="show"
       @confirm="confirmMsg"
       message-align="left"
       show-cancel-button
       confirm-button-color="#fff"
-      confirm-button-text="填好了^_^"
-      cancel-button-text="不改了~"
-      cancel-button-color="#333">
-
-      <van-cell title="用餐人数">
-        <van-stepper v-model="peopleCount" integer/>
-      </van-cell>
-
-      <van-field
-        v-model="remark"
-        label="备注"
-        clearable
-        type="textarea"
-        placeholder="请输入留言"
-        rows="1"
-        autosize/>
-
+      confirm-button-text="我选好了^_^"
+      cancel-button-color="#333"
+      cancel-button-text="再看看~">
+      您确定要下单吗？
     </van-dialog>
   </div>
 </template>
@@ -32,18 +19,11 @@ export default {
   data() {
     return {
       show: false,
-      // peopleCount: 1,
-      // remark: ''
     }
   },
-  props: ['peopleCount', 'remark'],
   methods: {
     confirmMsg() {
-      let msg = {
-        peopleCount: this.peopleCount,
-        remark: this.remark
-      };
-      this.$emit('changeMsg', msg)
+      this.$emit('confirmOrder');
     },
     openDialog() {
       this.show = true;
@@ -65,7 +45,7 @@ export default {
       }
 
       .van-dialog__content {
-        padding: 0 0.15rem;
+        padding: 0.4rem;
         position: relative;
         font-size: 0.29rem;
         &::before {
@@ -105,24 +85,6 @@ export default {
       .van-dialog__cancel {
         background-color: #CCCCCC;
       }
-
-      .van-stepper__minus, .van-stepper__plus {
-        color: #EC313D;
-        // width: 0.8rem;
-        // height: 0.8rem;
-      }
-
-      // .van-stepper__input {
-      //   width: 0.85rem;
-      //   height: 0.8rem;
-      // }
-
-      .van-stepper__minus--disabled, .van-stepper__plus--disabled {
-        color: #c8c9cc !important;
-        background-color: #f7f8fa;
-      }
-
     }
-
   }
 </style>

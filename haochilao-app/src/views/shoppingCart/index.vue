@@ -13,11 +13,14 @@
           <div class="people_count_box">
 
             <div class="people_count_content">
-              <div class="people_count_text">当前用餐：2人</div>
-              <div class="remark">备注：无</div>
+              <div class="people_count_text">当前用餐：{{ peopleCount }}人</div>
+              <div class="remark_box">
+                <span class="remark_label">备注：</span>
+                <span class="remark_text">{{ remark || '无' }}</span>
+              </div>
             </div>
 
-            <svg class="icon" aria-hidden="true" @click="editPeople">
+            <svg class="icon" aria-hidden="true" @click="openEditPeopleDialog">
               <use xlink:href="#icon-bianji"></use>
             </svg>
 
@@ -54,8 +57,6 @@
                     <van-stepper
                       v-model="item.orderedCount"
                       min="1"
-                      :input-width="stepperInputWidth"
-                      :button-size="stepperButtonSize"
                       integer
                     />
                   </div>
@@ -78,6 +79,9 @@
       </div>
 
       <div class="recommend_list">
+        <div class="recommend_title">
+          点过这些菜的人还喜欢吃这些~
+        </div>
         <dish-list :dishList="recommendList" @setDishDetailShow="setDishDetailShow"></dish-list>
       </div>
 
@@ -87,6 +91,7 @@
     </div>
     <template slot="fixed">
       <div>
+
         <!-- 详情页 -->
         <transition name="page-move">
           <DishDetail 
@@ -94,8 +99,17 @@
             @setDishDetailShow="setDishDetailShow" 
             @getPageData="getCartList"/>
         </transition>
+
         <!-- 编辑人数和备注 -->
-        <EditPeopleCount ref="EditPeopleCount"/>
+        <EditPeopleCount 
+          ref="EditPeopleCount"
+          :remark="remark"
+          :peopleCount="peopleCount"
+          @changeMsg="setPeopleCountAndRemark"/>
+        
+        <!-- 下单确认框 -->
+        <ConfirmOrderDialog ref="ConfirmOrderDialog" @confirmOrder="confirmOrderMsg"/>
+
       </div>
     </template>
   </my-page>
@@ -106,6 +120,7 @@ import DishList from "@/components/dishList";
 import DishDetail from '../dishDetail';
 import EditPeopleCount from './components/editPeopleCount';
 import PageBottom from "@/components/pageBottom";
+import ConfirmOrderDialog from "@/components/confirmOrderDialog";
 
 import data from "@/data/dish";
 
@@ -115,14 +130,16 @@ export default {
     DishList,
     DishDetail,
     PageBottom,
-    EditPeopleCount
+    EditPeopleCount,
+    ConfirmOrderDialog
   },
   data() {
     return {
       value: 4,
       cartList: [],
       recommendList: [],  // 推荐列表
-      isDishDetailShow: false
+      isDishDetailShow: false,
+      remark: '',  // 备注
     }
   },
   mounted() {
@@ -130,20 +147,26 @@ export default {
     this.getRecommendList();
   },
   computed: {
-    stepperInputWidth() {
-			let width = 0.7;
-			return this.rootRemToPx * width;
-		},
-		stepperButtonSize() {
-			let size = 0.7;
-			return this.rootRemToPx * size;
-    },
-    rootRemToPx() {
-      return this.$store.state.rootRemToPx;
+    // rootRemToPx() {
+    //   return this.$store.state.rootRemToPx;
+    // },
+    peopleCount() {
+      return this.$store.state.peopleCount
     }
   },
   methods: {
-    editPeople() {
+    confirmOrderMsg() {
+      console.log('确认下单成功')
+		},
+    setPeopleCountAndRemark(msg) {
+      console.log('msg***', msg);
+      this.remark = msg.remark;
+      this.$store.commit('setPeopleCount', msg.peopleCount);
+      // 此处需要重置滑动容器，因为内层容器高度变了
+      this.$refs.myPage.rebuildScroll();
+    },
+    // 打开编辑就餐人数和备注弹框
+    openEditPeopleDialog() {
       this.$refs.EditPeopleCount.openDialog();
     },
     goHomePage() {
@@ -227,10 +250,17 @@ export default {
         margin-right: 0;
         margin-left: 0.15rem;
       }
-      .remark {
+      .remark_box {
         font-size: 0.27rem;
         color: #666;
         line-height: 0.35rem;
+        display: flex;
+      }
+      // .remark_label {
+      //   width: 10%;
+      // }
+      .remark_text {
+        flex: 1;
       }
       .edit {
         width: 1rem;
@@ -321,14 +351,25 @@ export default {
       }
     }
 
-    >>>.van-stepper__minus, >>>.van-stepper__plus {
-			color: #EC313D;
-		}
+    >>>.van-stepper {
+      .van-stepper__minus, .van-stepper__plus {
+        color: #EC313D;
+        width: 0.7rem;
+        height: 0.7rem;
+      }
 
-		>>>.van-stepper__minus--disabled, >>>.van-stepper__plus--disabled {
-			color: #c8c9cc !important;
-			background-color: #f7f8fa;
-		}
+      .van-stepper__input {
+        width: 0.75rem;
+        height: 0.7rem;
+      }
+
+      .van-stepper__minus--disabled, .van-stepper__plus--disabled {
+        color: #c8c9cc !important;
+        background-color: #f7f8fa;
+      }
+    }
+
+    
 
     .rmb_icon {
       margin-right: 0.04rem;
@@ -346,7 +387,17 @@ export default {
     }
 
     .recommend_list {
-      padding: 0.15rem 0.15rem 0;
+      padding: 0.5rem 0.15rem 0;
+    }
+
+    .recommend_title {
+      font-size: 0.28rem;
+      padding: 0.2rem 0.15rem;
+      text-align: center;
+      border-radius: 0.2rem;
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 0.15rem;
     }
   }
 

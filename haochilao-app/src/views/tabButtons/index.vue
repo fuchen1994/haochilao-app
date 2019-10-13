@@ -22,7 +22,7 @@
       iconClass="icon-querenfangan"/>
 
     <transition name="page-move">
-      <router-view class="router_view_position"></router-view>
+      <router-view class="view_position"></router-view>
 		</transition>
 
   </div>
@@ -50,5 +50,13 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-  
+  .view_position {
+    position: absolute !important;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 1
+  }
 </style>

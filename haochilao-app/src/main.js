@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import './cube-ui'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -18,17 +17,19 @@ document.body.addEventListener('touchstart', function () {})
 import './assets/fontIcon/iconfont.js'
 import './assets/fontIcon/iconfont.css'
 
-import loadmore from './utils/loadMore'
-Vue.directive('loadmore', loadmore)
+// import loadmore from './utils/loadMore'
+// Vue.directive('loadmore', loadmore)
 
 import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload)
 
 import {
   Style,
-  Scroll
+  Scroll,
+  ScrollNavBar
 } from 'cube-ui'
 Vue.use(Scroll)
+Vue.use(ScrollNavBar)
 
 Vue.config.productionTip = false
 

@@ -1,60 +1,113 @@
 <template>
 	<div id="app">
-		<transition :name="transitionName" @after-enter="beforeTransition" v-if="!disableTransition">
+		<MyButton v-if="$route.name === 'home' || $route.name === 'shoppingCart'"/>
+		<MyButton
+			v-if="$route.name === 'home'"
+			@click="goShoppingCartPage"
+			position="right"
+			text="点菜单"
+			iconClass="icon-945caidan_jiyao"
+		/>
+
+		<MyButton
+			v-if="$route.name === 'shoppingCart'"
+			@click="goHomePage"
+			position="center"
+			text="点餐"
+			iconClass="icon-diancan"
+		/>
+
+		<MyButton
+			v-if="$route.name === 'shoppingCart'"
+			position="right"
+			text="下单"
+			iconClass="icon-querenfangan"
+			@click="openOrderConfirmDialog"
+		/>
+
+		<transition :name="transitionName" @after-enter="beforeTransition">
 			<keep-alive v-if="$route.meta.keepAlive">
 				<router-view ref="routerViewComponent" class="router_view_position"></router-view>
 			</keep-alive>
 
 			<router-view v-else ref="routerViewComponent" class="router_view_position"></router-view>
 		</transition>
-		<router-view class="router_view_position" v-else></router-view>
+
 	</div>
 </template>
 
 <script>
+import MyButton from "@/components/myButton";
+
 export default {
 	name: "app",
+	components: {
+		MyButton
+	},
 	data() {
 		return {
 			transitionName: ""
 		};
 	},
 	mounted() {
-		let fontSize = document.documentElement.style.fontSize;
-		let size = parseFloat(fontSize);
-    this.$store.commit("setRootRemToPx", size);
-    document.addEventListener('WeixinJSBridgeReady',function onBridgeReady() {
-      // 通过下面这个API隐藏底部导航栏
-      WeixinJSBridge.call('hideToolbar');
-      // 通过下面这个API隐藏右上角按钮
-      WeixinJSBridge.call('hideOptionMenu');
-    });
+		this.setRootRemToPx();
+		this.hideToolbarAndMenu();
 	},
 	watch: {
 		$route(to, from) {
 			console.log("app监听路由-to", to);
 			console.log("app监听路由-from", from);
-			const toDepth = to.path.split("/").length;
-			const fromDepth = from.path.split("/").length;
-			this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
+			// const toDepth = to.path.split("/").length;
+			// const fromDepth = from.path.split("/").length;
+			// this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
 
-			// if(to.meta > from.meta){
-			//   this.transitionName = "slide-left"
-			// }else{
-			//   this.transitionName = "slide-right"
-			// }
+			if(to.meta.pageIndex > from.meta.pageIndex){
+			  this.transitionName = "slide-left"
+			}else{
+			  this.transitionName = "slide-right"
+			}
 		}
 	},
 	computed: {
 		disableTransition() {
-			console.log('this.$route.matched', this.$route.matched[0].name)
-			if (this.$route.matched[0].name == 'dish') {
-				return true
+			console.log("this.$route.matched", this.$route.matched[0].name);
+			if (this.$route.matched[0].name == "dish") {
+				return true;
 			}
-			return false
+			return false;
 		}
 	},
 	methods: {
+		openOrderConfirmDialog() {
+			console.log('openOrderConfirmDialog')
+			this.$nextTick(() => {
+				this.$refs.routerViewComponent.$refs.ConfirmOrderDialog.openDialog();
+			})
+		},
+		// 隐藏微信分享按钮和底部导航栏
+		hideToolbarAndMenu() {
+			document.addEventListener(
+				"WeixinJSBridgeReady",
+				function onBridgeReady() {
+					// 通过下面这个API隐藏底部导航栏
+					WeixinJSBridge.call("hideToolbar");
+					// 通过下面这个API隐藏右上角按钮
+					WeixinJSBridge.call("hideOptionMenu");
+				}
+			);
+		},
+		// 保存根字体大小
+		setRootRemToPx() {
+			let fontSize = document.documentElement.style.fontSize;
+			let size = parseFloat(fontSize);
+			this.$store.commit("setRootRemToPx", size);
+		},
+		goHomePage() {
+			this.$router.push("/");
+		},
+		goShoppingCartPage() {
+			this.$router.push("/shoppingCart");
+		},
 		beforeTransition() {
 			// console.log('页面动画执行前')
 			// this.$root.$emit('triggerScroll')
@@ -82,20 +135,20 @@ export default {
 }
 
 .slide-right-enter {
-	opacity: 0;
+	/* opacity: 0; */
 	transform: translate3d(-100%, 0, 0);
 }
 .slide-right-leave-to {
-	opacity: 0;
-	transform: translate3d(100%, 0, 0);
+	/* opacity: 0.5; */
+	transform: translate3d(25%, 0, 0);
 }
 .slide-left-enter {
-	opacity: 0;
+	/* opacity: 0; */
 	transform: translate3d(100%, 0, 0);
 }
 .slide-left-leave-to {
-	opacity: 0;
-	transform: translate3d(-100%, 0, 0);
+	/* opacity: 0.5; */
+	transform: translate3d(-25%, 0, 0);
 }
 
 .page-move-enter,
@@ -115,6 +168,7 @@ export default {
 	top: 0;
 	bottom: 0;
 	overflow: hidden;
+	box-shadow: 0 0 0.15rem 0.1rem rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -154,5 +208,41 @@ li {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+/* 1px上边框 */
+.tiny_line_top::before {
+	position: absolute;
+	box-sizing: border-box;
+	content: " ";
+	pointer-events: none;
+	right: 0;
+	top: 0;
+	left: 0;
+	border-top: 1px solid #ebedf0;
+	-webkit-transform: scaleY(0.5);
+	transform: scaleY(0.5);
+}
+
+/* 1px下边框 */
+.tiny_line_bottom::after {
+	position: absolute;
+	box-sizing: border-box;
+	content: " ";
+	pointer-events: none;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	border-top: 1px solid #ebedf0;
+	-webkit-transform: scaleY(0.5);
+	transform: scaleY(0.5);
+}
+
+/* 比1px更细的线 */
+.separate-title-line {
+	height: 1px;
+	width: 1rem;
+	background-color: #333;
+	transform: scaleY(0.5);
 }
 </style>

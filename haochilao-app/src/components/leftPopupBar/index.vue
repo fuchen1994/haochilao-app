@@ -12,47 +12,40 @@
 					<ul class="fast-order">
 						<li>
 							<svg class="icon" aria-hidden="true">
-								<use xlink:href="#icon-youhuiquan2" />
+								<use xlink:href="#icon-dianzan1" />
 							</svg>
-							优惠
+							我喜欢的菜
 						</li>
 						<li>
 							<svg class="icon" aria-hidden="true">
-								<use xlink:href="#icon-redu1" />
+								<use xlink:href="#icon-remen" />
 							</svg>
-							本店销量
+							最受欢迎的菜
 						</li>
 						<li>
 							<svg class="icon" aria-hidden="true">
-								<use xlink:href="#icon-jilu1" />
+								<use xlink:href="#icon-chakanlishi-default" />
 							</svg>
 							我点过的菜
 						</li>
 					</ul>
 
 					<div class="dish_classify_wrapper">
-						<cube-scroll>
-							<ul class="dish-classify-content" ref="classifyWrapper">
-								<li
-									v-for="(item, i) in dishClassifyList"
-									:key="i"
-									:class="{ active: currentDishClassifyIndex == i }"
-									@click="chooseDishClassify(item, i)"
-								>
-									<span>{{ item }}</span>
-									<!-- <i class="separate-line"></i> -->
-								</li>
-
-								<li
-									class="slide_block"
-									:style="{ 
-                  top: slideTop + 'px',
-                  width: slideWidth + 'px',
-                  height: slideHeight + 'px'
-                }"
-								></li>
-							</ul>
-						</cube-scroll>
+						<cube-scroll-nav-bar 
+						direction="vertical"
+						:current="currentLabel" 
+						:labels="dishClassifyList"
+						
+						>
+							<template slot-scope="scope">
+								<div class="nav_item" @click="chooseDishClassify(scope.txt, scope.index)">
+									<span class="nav_text">
+										{{ scope.txt }}
+										<span class="order_count">{{ showOrderCount(scope.index) }}</span>
+									</span>
+								</div>
+							</template>
+						</cube-scroll-nav-bar>
 					</div>
 				</div>
 
@@ -81,9 +74,10 @@ export default {
 			isTabbarShow: null,
 			// currentDishClassifyId: null, // 当前选择的菜品分类id
 			currentDishClassifyIndex: 0, // 当前选择的菜品分类下标
-			slideTop: 0,
+			// slideTop: 0,
 			slideWidth: 0,
-			slideHeight: 0
+			slideHeight: 0,
+			orderCountList: [0,1,0,5,3,0,1,0,0,1,0]
 		};
 	},
 	props: ["dishClassifyList", "currentActiveIndex"],
@@ -92,24 +86,41 @@ export default {
 		rootRemToPx() {
 			let fontSize = document.documentElement.style.fontSize;
 			return parseFloat(fontSize);
+		},
+		currentLabel() {
+			return this.dishClassifyList[this.currentDishClassifyIndex]
 		}
 	},
 	watch: {
 		currentDishClassifyIndex(newVal) {
 			// console.log('currentDishClassifyIndex', newVal)
-			this.setSlideWidth();
+			// this.setSlideWidth();
 		},
-		dishClassifyList: {
-			deep: true,
-			handler(val) {
-				this.setSlideWidth();
-			}
-    },
+		// dishClassifyList: {
+		// 	deep: true,
+		// 	handler(val) {
+		// 		this.setSlideWidth();
+		// 	}
+    // },
     currentActiveIndex(newVal) {
       this.currentDishClassifyIndex = newVal;
     }
 	},
 	methods: {
+		showOrderCount(currentIndex) {
+			for (let i = 0; i < this.orderCountList.length; i++) {
+				if (currentIndex === i) {
+					if (this.orderCountList[i] != 0) {
+						return this.orderCountList[i]
+					} else {
+						return ''
+					}
+				}
+			}
+		},
+		changeHandler() {
+
+		},
 		setSlideWidth() {
 			this.$nextTick(() => {
 				const currentUl = this.$refs.classifyWrapper;
@@ -163,12 +174,13 @@ export default {
 		},
 		// 选择菜品
 		chooseDishClassify(item, index) {
-      // this.currentDishClassifyId = item.id;  没有使用id
+			console.log('左侧点击了 ',item)
       if (index === this.currentDishClassifyIndex) return false;
       this.currentDishClassifyIndex = index;
-      // this.$store.commit('setLeftActiveLabel', item)
+      this.$store.commit('setLeftActiveLabel', item)
       this.$emit('labelChange', index);
-      this.checkAction();
+			// this.checkAction();
+			this.closeTabbar();
 		},
 		checkAction() {
 			if (timer) clearTimeout(timer);
@@ -287,8 +299,6 @@ export default {
 	.dish-classify-content {
 		font-size: 0.28rem;
 		position: relative;
-		border: 0.2rem solid #eee;
-		border-right: none;
 
 		li {
 			// padding-left 1rem
@@ -341,5 +351,45 @@ export default {
 		height: 100%;
 		overflow: hidden;
 	}
+
+	>>>.cube-scroll-nav-bar {
+		.cube-scroll-nav-bar-items {
+			padding: 0.2rem;
+		}
+		.cube-scroll-nav-bar-item {
+			font-size: 0.26rem;
+			padding: 0;
+		}
+		.cube-scroll-nav-bar-item_active {
+			background-color: #eee;
+			border-radius: 0.2rem;
+			.nav_item {
+				font-size: 0.3rem !important;
+			}
+		}
+	}
+
+	.nav_item {
+		font-size: 0.28rem;
+		position: relative;
+		// z-index: 204;
+		padding: 0 0.45rem;
+		text-align: center;
+		background-color: transparent;
+		.nav_text {
+			display: inline-block;
+			position: relative;
+			// width 100%
+			padding: 0.35rem 0;
+		}
+		.order_count {
+			position: absolute;
+			top: 0.22rem;
+			right: -0.26rem;
+			font-size: 0.24rem;
+			color: #EC313D;
+		}
+	}
+	
 }
 </style>
