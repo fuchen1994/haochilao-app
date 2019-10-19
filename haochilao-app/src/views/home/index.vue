@@ -280,10 +280,7 @@ export default {
     ...mapGetters(["home", "rootRemToPx"]),
     options() {
       return {
-        pullDownRefresh: {
-          // 下拉刷新页面
-          txt: "没有新的数据了~"
-        },
+        pullDownRefresh: false,
         pullUpLoad: false, // 上拉加载更多
         startY: -this.home.pageScrollY,
         scrollbar: {

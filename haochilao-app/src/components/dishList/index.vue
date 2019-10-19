@@ -180,14 +180,14 @@ export default {
 		position: absolute;
 		top: 0;
 		right: 0;
-		padding: 0.05rem 0.15rem;
+		padding: 0.05rem 0.2rem;
 		background-color: #EC313D;
 		// background-color: #ee0a24;
 		// background-image linear-gradient(to top, #ff6034, #ee0a24)
 		font-size: 0.25rem;
 		border-radius: 0.2rem;
 		color: #fff;
-		// border: 1px solid #fff;
+		border: 1px solid #fff;
 	}
 
 	.dish_icon_box {

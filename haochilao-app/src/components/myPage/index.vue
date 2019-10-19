@@ -1,7 +1,12 @@
 <template>
   <div class="page_container">
     <img :src="bgImg" class="bg_img">
-    <cube-scroll class="page_content" ref="scroll">
+    <cube-scroll 
+      ref="scroll"  
+      :options="options"
+      @pulling-down="onPullingDown"
+      @pulling-up="onPullingUp"
+      class="page_content">
       <slot></slot>
     </cube-scroll>
       <slot name="fixed"></slot>
@@ -12,12 +17,56 @@ export default {
   data() {
     return {
       bgImg: '',
+      pullDownRefreshTxt: '没有新的数据了~',
+      pullUpLoadMoreTxt: '加载更多...',
+      pullUpLoadNoMoreTxt: '没有更多了~',
+    }
+  },
+  props: {
+    pullUpLoad: {
+      type: Boolean,
+      default: false
+    },
+    pullDownRefresh: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
     this.randomImg();
   },
+  computed: {
+    options() {
+      return {
+        pullDownRefresh: this.pullDownRefreshObj,  // 下拉刷新
+        pullUpLoad: this.pullUpLoadObj, // 上拉加载更多
+        startY: 0,
+        scrollbar: {
+          fade: true
+        }
+      };
+    },
+    pullDownRefreshObj() {
+      return this.pullDownRefresh ? {
+        txt: this.pullDownRefreshTxt
+      } : false
+    },
+    pullUpLoadObj() {
+      return this.pullUpLoad ? {
+        txt: {
+          more: this.pullUpLoadMoreTxt,
+          noMore: this.pullUpLoadNoMoreTxt
+        }
+      } : false
+    }
+  },
   methods: {
+    onPullingDown() {
+
+    },
+    onPullingUp() {
+      
+    },
     randomImg() {
       this.bgImg = require('../../assets/bg/bg-0' + this.getRndInteger(1, 9) + '.jpg');
 

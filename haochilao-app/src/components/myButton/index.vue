@@ -83,6 +83,7 @@ export default {
 		letter-spacing: 0.02rem;
 	}
 }
+
 .left_side {
   left: 0.4rem;
   background-color: rgba(255, 255, 255, 0.9);
@@ -90,6 +91,7 @@ export default {
     color: #333;
   }
 }
+
 .center_side {
 	left: 50%;
 	transform: translateX(-50%);
@@ -99,6 +101,19 @@ export default {
     font-size: 0.5rem;
   }
 }
+
+.disable_center_side {
+	left: 50%;
+	transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+	>>>.van-button__text {
+    color: #333;
+  }
+  .iconfont {
+    font-size: 0.5rem;
+  }
+}
+
 .right_side {
   right: 0.4rem;
   background-color: rgba(249, 64, 46, 0.9);

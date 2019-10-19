@@ -12,11 +12,17 @@ const Login = _import('login/index')
 // 主页
 const Home = _import('home/index')
 // 菜品详情页
-const dishDetail = _import('dishDetail/index')
+const DishDetail = _import('dishDetail/index')
 // 购物车
 const ShoppingCart = _import('shoppingCart/index')
 // 店铺欢迎页
 const Welcome = _import('welcome/index')
+// 选择用餐人数页
+const ChoosePeopleCount = _import('choosePeopleCount/index')
+// 我的订单-订单列表
+const OrderList = _import('orderList/index')
+// 我的订单-订单详情
+const OrderDetail = _import('orderDetail/index')
 
 Vue.use(Router)
 
@@ -27,7 +33,7 @@ export default new Router({
   // }),
   routes: [{
       path: '/',
-      redirect: '/home'
+      redirect: '/welcome'
     },
     {
       path: '*',
@@ -69,10 +75,34 @@ export default new Router({
       meta: {
         pageIndex: -2
       }
-    }
+    },
+    {
+      path: '/choosePeopleCount',
+      component: ChoosePeopleCount,
+      name: 'choosePeopleCount',
+      meta: {
+        pageIndex: -1
+      }
+    },
+    {
+      path: '/orderList',
+      component: OrderList,
+      name: 'orderList',
+      meta: {
+        pageIndex: 3
+      }
+    },
+    {
+      path: '/orderDetail',
+      component: OrderDetail,
+      name: 'orderDetail',
+      meta: {
+        pageIndex: 4
+      }
+    },
     // {
     //   path: '/dishDetail/:id',
-    //   component: dishDetail,
+    //   component: DishDetail,
     //   name: 'dishDetail'
     // }
   ]

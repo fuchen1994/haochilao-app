@@ -101,14 +101,19 @@
         </transition>
 
         <!-- 编辑人数和备注 -->
-        <EditPeopleCount 
-          ref="EditPeopleCount"
+        <EditPeopleCountDialog 
+          ref="EditPeopleCountDialog"
           :remark="remark"
           :peopleCount="peopleCount"
           @changeMsg="setPeopleCountAndRemark"/>
         
         <!-- 下单确认框 -->
-        <ConfirmOrderDialog ref="ConfirmOrderDialog" @confirmOrder="confirmOrderMsg"/>
+        <ConfirmDialog 
+          contentText="您确定要下单吗？"
+          confirmText="我选好了^_^"
+          cancelText="再看看~"
+          ref="ConfirmOrderDialog" 
+          @confirm="confirmOrderMsg"/>
 
       </div>
     </template>
@@ -118,9 +123,9 @@
 import MyPage from '@/components/myPage'
 import DishList from "@/components/dishList";
 import DishDetail from '../dishDetail';
-import EditPeopleCount from './components/editPeopleCount';
+import EditPeopleCountDialog from './components/editPeopleCountDialog';
 import PageBottom from "@/components/pageBottom";
-import ConfirmOrderDialog from "@/components/confirmOrderDialog";
+import ConfirmDialog from "@/components/confirmDialog";
 
 import data from "@/data/dish";
 
@@ -130,8 +135,8 @@ export default {
     DishList,
     DishDetail,
     PageBottom,
-    EditPeopleCount,
-    ConfirmOrderDialog
+    EditPeopleCountDialog,
+    ConfirmDialog
   },
   data() {
     return {
@@ -156,10 +161,13 @@ export default {
   },
   methods: {
     confirmOrderMsg() {
-      console.log('确认下单成功')
+      console.log('下单成功');
+      this.$toast('下单成功,您可以在导航-我的订单里查看订单状态哦~');
+
+      // this.$router.push('/orderList');
 		},
     setPeopleCountAndRemark(msg) {
-      console.log('msg***', msg);
+      console.log('msg---', msg);
       this.remark = msg.remark;
       this.$store.commit('setPeopleCount', msg.peopleCount);
       // 此处需要重置滑动容器，因为内层容器高度变了
@@ -167,7 +175,7 @@ export default {
     },
     // 打开编辑就餐人数和备注弹框
     openEditPeopleDialog() {
-      this.$refs.EditPeopleCount.openDialog();
+      this.$refs.EditPeopleCountDialog.open();
     },
     goHomePage() {
       this.$router.push('/home');

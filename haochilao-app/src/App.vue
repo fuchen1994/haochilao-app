@@ -1,6 +1,9 @@
 <template>
 	<div id="app">
-		<MyButton v-if="$route.name === 'home' || $route.name === 'shoppingCart'"/>
+		<MyButton 
+			v-if="$route.name === 'home' || $route.name === 'shoppingCart'"
+			@click="openTabList"/>
+
 		<MyButton
 			v-if="$route.name === 'home'"
 			@click="goShoppingCartPage"
@@ -25,6 +28,17 @@
 			@click="openOrderConfirmDialog"
 		/>
 
+		<MyButton
+			v-if="$route.name === 'choosePeopleCount'"
+			@click="startOrder"
+			:position="choosePeopleCountBtnIsDisable ? 'disable_center' : 'center'"
+			text="点餐"
+			iconClass="icon-diancan"
+		/>
+
+		<!-- 导航菜单 -->
+		<TabList ref="TabList"/>
+
 		<transition :name="transitionName" @after-enter="beforeTransition">
 			<keep-alive v-if="$route.meta.keepAlive">
 				<router-view ref="routerViewComponent" class="router_view_position"></router-view>
@@ -38,16 +52,27 @@
 
 <script>
 import MyButton from "@/components/myButton";
+import TabList from "@/components/tabList";
+import Bus from '@/utils/bus.js'
 
 export default {
 	name: "app",
 	components: {
-		MyButton
+		MyButton,
+		TabList
 	},
 	data() {
 		return {
-			transitionName: ""
+			transitionName: "",
+			choosePeopleCountBtnIsDisable: true
 		};
+	},
+	created() {
+		let that = this;
+		Bus.$on('setBtnDisable', msg => {
+			// console.log('Bus---', msg);
+			that.choosePeopleCountBtnIsDisable = msg;
+		});
 	},
 	mounted() {
 		this.setRootRemToPx();
@@ -78,10 +103,20 @@ export default {
 		}
 	},
 	methods: {
+		openTabList() {
+			this.$refs.TabList.open();
+		},
+		startOrder() {
+			if (this.choosePeopleCountBtnIsDisable) {
+				return this.$toast('请选择正确的用餐人数');
+			} else {
+				this.$router.replace("/home");
+			}
+		},
 		openOrderConfirmDialog() {
 			console.log('openOrderConfirmDialog')
 			this.$nextTick(() => {
-				this.$refs.routerViewComponent.$refs.ConfirmOrderDialog.openDialog();
+				this.$refs.routerViewComponent.$refs.ConfirmOrderDialog.open();
 			})
 		},
 		// 隐藏微信分享按钮和底部导航栏
@@ -103,7 +138,7 @@ export default {
 			this.$store.commit("setRootRemToPx", size);
 		},
 		goHomePage() {
-			this.$router.push("/");
+			this.$router.push("/home");
 		},
 		goShoppingCartPage() {
 			this.$router.push("/shoppingCart");
@@ -233,7 +268,7 @@ li {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	border-top: 1px solid #ebedf0;
+	border-bottom: 1px solid #ebedf0;
 	-webkit-transform: scaleY(0.5);
 	transform: scaleY(0.5);
 }

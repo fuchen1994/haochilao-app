@@ -22,14 +22,14 @@ export default {
   components: {
     MyPage
   },
-  // data: {
+  // data() {
   //   return {
 
   //   }
   // },
   methods: {
     startOrder() {
-      
+      this.$router.replace('/choosePeopleCount');
     }
   }
 };

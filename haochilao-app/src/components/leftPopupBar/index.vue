@@ -236,6 +236,8 @@ export default {
 			width: 1.2rem;
 			height: 1.2rem;
 			border-radius: 50%;
+			// border: 1px solid #999;
+			box-shadow: 0.03rem 0 0.1rem rgba(0, 0, 0, 0.3);
 			font-size: 0.24rem;
 			z-index: 202;
 
