@@ -5,7 +5,7 @@
       <div class="warining-msg">抱歉，您访问的页面未找到！</div>
       <div class="btn-group">
         <van-button color="#0ec5a1" @click="goHomePage">返回首页</van-button>
-        <van-button color="#ffba00" @click="goLastPage">返回上一页</van-button>
+        <!-- <van-button color="#ffba00" @click="goLastPage">返回上一页</van-button> -->
       </div>
     </div>
 		

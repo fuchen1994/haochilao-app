@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     goOrderListPage() {
-      this.$router.push('/orderList');
+      this.$router.replace('/orderList');
       this.close();
     },
     open() {

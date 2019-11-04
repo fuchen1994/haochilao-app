@@ -61,12 +61,8 @@ export default {
     }
   },
   methods: {
-    onPullingDown() {
-
-    },
-    onPullingUp() {
-      
-    },
+    onPullingDown() {},
+    onPullingUp() {},
     randomImg() {
       this.bgImg = require('../../assets/bg/bg-0' + this.getRndInteger(1, 9) + '.jpg');
 

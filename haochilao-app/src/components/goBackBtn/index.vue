@@ -13,7 +13,8 @@ export default {
   },
   methods: {
     goBackPage() {
-      this.$router.go(-1);
+			// this.$router.go(-1);
+			this.$emit('click');
     }
   }
 }

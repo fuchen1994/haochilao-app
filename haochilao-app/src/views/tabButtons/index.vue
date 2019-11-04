@@ -41,10 +41,10 @@ export default {
   },
   methods: {
     goHomePage() {
-      this.$router.push('/dish');
+      this.$router.replace('/dish');
     },
     goShoppingCartPage() {
-			this.$router.push('/dish/shoppingCart');
+			this.$router.replace('/dish/shoppingCart');
 		}
   }
 }

@@ -104,6 +104,7 @@ export default {
 	},
 	methods: {
 		openTabList() {
+			this.$store.commit('setLastRouterPath', this.$route.fullPath)
 			this.$refs.TabList.open();
 		},
 		startOrder() {
@@ -138,10 +139,10 @@ export default {
 			this.$store.commit("setRootRemToPx", size);
 		},
 		goHomePage() {
-			this.$router.push("/home");
+			this.$router.replace("/home");
 		},
 		goShoppingCartPage() {
-			this.$router.push("/shoppingCart");
+			this.$router.replace("/shoppingCart");
 		},
 		beforeTransition() {
 			// console.log('页面动画执行前')

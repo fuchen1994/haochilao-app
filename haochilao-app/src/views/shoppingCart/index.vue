@@ -164,7 +164,7 @@ export default {
       console.log('下单成功');
       this.$toast('下单成功,您可以在导航-我的订单里查看订单状态哦~');
 
-      // this.$router.push('/orderList');
+      // this.$router.replace('/orderList');
 		},
     setPeopleCountAndRemark(msg) {
       console.log('msg---', msg);
@@ -178,7 +178,7 @@ export default {
       this.$refs.EditPeopleCountDialog.open();
     },
     goHomePage() {
-      this.$router.push('/home');
+      this.$router.replace('/home');
     },
     // 显示详情
     setDishDetailShow(bool) {

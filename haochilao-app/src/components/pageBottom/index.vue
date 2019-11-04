@@ -1,6 +1,6 @@
 <template>
   <div class="page_bottom">
-    <img :src="imgUrl">
+    <!-- <img :src="imgUrl"> -->
   </div>
 </template>
 <script>

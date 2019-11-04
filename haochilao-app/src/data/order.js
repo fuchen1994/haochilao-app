@@ -1,5 +1,56 @@
 export default {
-  orderDetail: {},
+  orderDetail: {
+    dishList: [
+      {
+        dishImgUrl: require('@/assets/bg/bg-01.jpg'),
+        dishName: '麻婆豆腐',
+        orderedCount: 5,
+        dishPrice: '12.00'
+      },
+      {
+        dishImgUrl: require('@/assets/bg/bg-10.jpg'),
+        dishName: '撒尿牛丸（推荐）',
+        orderedCount: 1,
+        dishPrice: '18.00'
+      },
+      {
+        dishImgUrl: require('@/assets/bg/bg-09.jpg'),
+        dishName: '阿华大虾（大锅）',
+        orderedCount: 3,
+        dishPrice: '112.00'
+      },
+      {
+        dishImgUrl: require('@/assets/bg/bg-08.jpg'),
+        dishName: '茶位',
+        orderedCount: 3,
+        dishPrice: '5.00'
+      },
+      {
+        dishImgUrl: require('@/assets/bg/bg-07.jpg'),
+        dishName: '米饭',
+        orderedCount: 3,
+        dishPrice: '6.00'
+      },
+      {
+        dishImgUrl: require('@/assets/bg/bg-06.jpg'),
+        dishName: '千张（推荐）',
+        orderedCount: 1,
+        dishPrice: '12.00'
+      },
+      {
+        dishImgUrl: require('@/assets/bg/bg-05.jpg'),
+        dishName: '土豆片',
+        orderedCount: 1,
+        dishPrice: '12.00'
+      },
+      {
+        dishImgUrl: require('@/assets/bg/bg-04.jpg'),
+        dishName: '红油牛肚',
+        orderedCount: 1,
+        dishPrice: '35.00'
+      },
+    ]
+  },
   // 订单列表
   orderList: [
     {

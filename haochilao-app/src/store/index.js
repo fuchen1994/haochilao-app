@@ -10,7 +10,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     rootRemToPx: 0,  // 当前根节点字体大小px
-    peopleCount: sessionStorage.getItem('peopleCount') ? Number(sessionStorage.getItem('peopleCount')) : 0  // 当前用餐人数
+    peopleCount: sessionStorage.getItem('peopleCount') ? Number(sessionStorage.getItem('peopleCount')) : 0,  // 当前用餐人数
+    lastRouterPath: '/home'
   },
   mutations: {
     setRootRemToPx (state, value) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     setPeopleCount(state, value) {
       state.peopleCount = value;
       sessionStorage.setItem('peopleCount', value);
+    },
+    setLastRouterPath(state, value) {
+      state.lastRouterPath = value;
     }
   },
   actions: {},

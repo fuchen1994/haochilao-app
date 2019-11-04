@@ -6,6 +6,7 @@
 				<div
           v-for="(item, i) in orderList"
           :key="i" 
+					@click="goOrderDetail(item)"
           class="order_item">
 					<div class="order_header tiny_line_bottom">
 						<div class="header_left">
@@ -53,7 +54,7 @@
 							round 
 							size="small" 
 							v-if="item.status < 6"
-							@click="openConfirmCancelOrderDialog(item)">
+							@click.stop="openConfirmCancelOrderDialog(item)">
 							取消订单
 						</van-button>
 
@@ -61,13 +62,14 @@
 							round 
 							size="small" 
 							v-if="item.status >= 6"
-							@click="deleteOrder(item)">
+							@click.stop="deleteOrder(item)">
 							删除订单
 						</van-button>
 
 						<van-button 
 						v-if="item.status == 2 || item.status == 3"
 						round 
+						@click.stop="reminderOrder(item)"
 						size="small">
 							催单
 						</van-button>
@@ -76,7 +78,7 @@
 						v-if="!item.isPayment && item.status < 6"
 						round 
 						size="small" 
-						type="danger">
+						color="#FA693D">
 							结算
 						</van-button>
 
@@ -84,7 +86,7 @@
 							round 
 							size="small" 
 							v-if="item.status >= 6"
-							@click="repeatOrder(item)">
+							@click.stop="repeatOrder(item)">
 							再来一单
 						</van-button>
 
@@ -97,7 +99,7 @@
 		<template slot="fixed">
 			<div>
 
-				<GoBackBtn />
+				<GoBackBtn @click="goLastPage"/>
 
         <!-- 取消订单确认框 -->
         <ConfirmDialog 
@@ -144,6 +146,16 @@ export default {
     this.getOrderList();
   },
 	methods: {
+		goLastPage() {
+			this.$router.replace(this.$store.state.lastRouterPath);
+		},
+		// 催单
+		reminderOrder(item) {
+			console.log('催单', item)
+		},
+		goOrderDetail(item) {
+			this.$router.replace("/orderDetail")
+		},
 		// 再来一单
 		repeatOrder(item) {
 			console.log('再来一单')
@@ -206,6 +218,7 @@ export default {
 
 			.title {
 				font-size: 0.28rem;
+				font-weight: 500;
 				color: #333;
 				margin-bottom: 0.05rem;
 			}
@@ -221,7 +234,8 @@ export default {
 
 			.status_text {
 				font-size: 0.28rem;
-				color: #ee0a24;
+				color: #FA693D;
+				// color: #ee0a24;
 				margin-bottom: 0.03rem;
 			}
 
