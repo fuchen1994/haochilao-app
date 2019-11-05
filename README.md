@@ -5,9 +5,9 @@
 * 设计一个app，需要有自己的主题，通过界面来凸显主题，设计思路也要跟主题相搭配，例如：卡通主题，……   
 ## 选择主题颜色
 * 这个很重要，因为针对的是餐饮，所以说颜色必须要让人有食欲，不能使用刺眼等使人反感，焦虑的颜色   
-  <img src="./demo-img/color-intro3.jpg" align=center />
-  <img src="./demo-img/color-intro2.jpg" align=center />
-  <img src="./demo-img/color-intro1.jpg" align=center />
+* <img src="./demo-img/color-intro3.jpg" align=center />
+* <img src="./demo-img/color-intro2.jpg" align=center />
+* <img src="./demo-img/color-intro1.jpg" align=center />
 ## 参考颜色
 * <img src="./demo-img/color1.jpg" width="50" align=center />&nbsp;&nbsp;&nbsp;#fe6464
 * <img src="./demo-img/color2.jpg" width="50" align=center />&nbsp;&nbsp;&nbsp;#F9C60B
@@ -22,19 +22,18 @@
 ## 主要页面
 ### 欢迎登录页   
   * 用户使用微信扫描桌台上的二维码进入欢迎页面。  
-    <figure class="third">
+  * <figure class="third">
       <img src="./demo-img/demo-01.jpg" width="280" />
     </figure>     
   * 登录要做H5页面的微信授权登录，然后需要携带一个桌台号的参数。欢迎页包括店家店名，logo，欢迎语，开始点餐按钮。logo目前没有合适素材，有待完善。
 ### 选择用餐人数页   
   * 用户点击开始点餐进入选择用餐人数页面。   
-    <figure class="third">
+  * <figure class="third">
       <img src="./demo-img/demo-02.jpg" width="280" /> <img src="./demo-img/demo-03.jpg" width="280" />
     </figure>     
   * 列表给出了11个人数选框，如果有超过的，点击更多即可弹出计数器弹框，可以自定义人数（计数器下限12，无上限）。选择完人数后，点餐按钮颜色改变（开始为禁用状态），可以进入点餐页。
 ### 点餐页    
-  *  
-    <figure class="third">
+  * <figure class="third">
       <img src="./demo-img/demo-04.jpg" width="280" /> <img src="./demo-img/demo-13.jpg" width="280" /> <img src="./demo-img/demo-06.jpg" width="280" /> <img src="./demo-img/demo-10.jpg" width="280" />
     </figure>    
   * 顶部是一个滚动公告栏，用于介绍一些店内特色或者活动，可以点击x关掉它。   
@@ -46,7 +45,7 @@
   * 底部导航按钮，点击弹出导航栏列表，包含，本店信息、我的订单、历史订单、本店活动、我的信息，暂时想到这几个。
 ### 菜品详情页    
   * 点击菜品列表菜品进入菜品详情页。
-    <figure class="third">
+  * <figure class="third">
       <img src="./demo-img/demo-14.jpg" width="280" />
     </figure>
   * 顶部使用轮播介绍菜品主图。
@@ -55,9 +54,9 @@
   * 选择下单数量，加入点菜单按钮。
 ### 点菜单页（购物车）    
   * 点击点菜单按钮跳到菜单页。   
-    <figure class="third">
+  * <figure class="third">
       <img src="./demo-img/demo-07.jpg" width="280" /> <img src="./demo-img/demo-08.jpg" width="280" /> <img src="./demo-img/demo-09.jpg" width="280" /> <img src="./demo-img/demo-15.jpg" width="280" />
-    </figure> 
+    </figure>
   * 当前用餐人数。
   * 客户备注。
   * 要下单的菜品列表。
@@ -65,9 +64,9 @@
   * 相关推荐。
 ### 我的订单页（订单列表）   
   * 从导航列表进入我的订单。    
-    <figure class="third">
+  * <figure class="third">
       <img src="./demo-img/demo-11.jpg" width="280" /> 
-    </figure>  
+    </figure>
   * 显示几号桌（外卖显示外送）订单，订单状态，下单时间，排队单号（让顾客有个心理预期，大概知道要等多久），显示两个菜名（多余省略），显示订单实付价格，还有功能按钮。   
   订单状态：1 订单确认 => 2 正在备餐 => 3 正在出餐  => 4 出餐完毕 => （5 正在送餐=>）6 已完成 => 7 已取消    
   * 功能：   
@@ -78,9 +77,9 @@
     5. 结算：线上付款（1 - 5）
 ### 订单详情页
   * 点击订单列表，进入详情。   
-    <figure class="third">
+  * <figure class="third">
       <img src="./demo-img/demo-12.jpg" width="280" /> 
-    </figure>  
+    </figure>
   * 显示详情桌号，排队单号，下单时间，用餐人数，所有已点菜品信息，订单状态，订单编号和功能。    
   * 菜品信息列表包括，每个菜品的主图，名称，数量，单价。最后优惠减免，合计后实付总价。   
 ### 持续更新...
