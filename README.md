@@ -2,19 +2,12 @@
 移动端扫码点餐App，使用vue-cli3开发的WebApp。使用了Vue.js、vue-router、vuex、vant，使用了基于better-scroll的框架cube-ui的scroll组件。   
 最近开发项目练手，不属于公司项目，纯属自己集设计，开发，测试于一身，可能看起来并不是很美观，因为也缺乏设计的经验和素材。目前app端主要页面基本完工（还差几个页面等待有时间再续）。   
 ## 选择主题风格
-* 设计一个app，需要有自己的主题，通过界面来凸显主题，设计思路也要跟主题相搭配，例如：卡通主题，……   
+* 设计一个app，需要有自己的主题风格，通过界面来凸显主题，设计思路也要跟主题相搭配，例如：卡通主题，……   
 ## 选择主题颜色
-* 这个很重要，因为针对的是餐饮，所以说颜色必须要让人有食欲，不能使用刺眼等使人反感，焦虑的颜色   
+* 这个很重要，因为针对的是餐饮，颜色必须要让人有食欲，不能使用刺眼等使人反感，焦虑的颜色   
 * <img src="./demo-img/color-intro3.jpg" align=center />
 * <img src="./demo-img/color-intro2.jpg" align=center />
 * <img src="./demo-img/color-intro1.jpg" align=center />
-## 参考颜色
-* <img src="./demo-img/color1.jpg" width="50" align=center />&nbsp;&nbsp;&nbsp;#fe6464
-* <img src="./demo-img/color2.jpg" width="50" align=center />&nbsp;&nbsp;&nbsp;#F9C60B
-* <img src="./demo-img/color3.jpg" width="50" align=center />&nbsp;&nbsp;&nbsp;#fc9153
-* <img src="./demo-img/color4.jpg" width="50" align=center />&nbsp;&nbsp;&nbsp;#6FB92C
-* <img src="./demo-img/color5.jpg" width="50" align=center />&nbsp;&nbsp;&nbsp;#57C800
-* <img src="./demo-img/color6.jpg" width="50" align=center />&nbsp;&nbsp;&nbsp;#FF6F43
 ##  说明   
 * 此版本为第一版，暂不做外卖系统。等下个版本再更新。
 * 页面图片全部来源于网络，使用了tinypng进行图片压缩。但是未修改尺寸，所使用的的图片均是大图，所以占用宽带较大，虽然使用了懒加载，加载还是会有点慢。   
