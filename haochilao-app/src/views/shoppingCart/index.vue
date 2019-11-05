@@ -161,13 +161,13 @@ export default {
   },
   methods: {
     confirmOrderMsg() {
-      console.log('下单成功');
+      // console.log('下单成功');
       this.$toast('下单成功,您可以在导航-我的订单里查看订单状态哦~');
 
       // this.$router.replace('/orderList');
 		},
     setPeopleCountAndRemark(msg) {
-      console.log('msg---', msg);
+      // console.log('msg---', msg);
       this.remark = msg.remark;
       this.$store.commit('setPeopleCount', msg.peopleCount);
       // 此处需要重置滑动容器，因为内层容器高度变了

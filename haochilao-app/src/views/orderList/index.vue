@@ -78,7 +78,7 @@
 						v-if="!item.isPayment && item.status < 6"
 						round 
 						size="small" 
-						color="#FA693D">
+						color="#ec313d">
 							结算
 						</van-button>
 
@@ -151,7 +151,7 @@ export default {
 		},
 		// 催单
 		reminderOrder(item) {
-			console.log('催单', item)
+			// console.log('催单', item)
 		},
 		goOrderDetail(item) {
 			this.$router.replace("/orderDetail")
